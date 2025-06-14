@@ -93,7 +93,7 @@ flex-wrap: wrap;
 gap: 10px;
 }
 
-.turn-tracker, .point-limit-control {
+.turn-tracker, .point-limit-control, .overall-total-rank { /* Added overall-total-rank */
 font-size: 1em; /* Adjusted font size */
 font-weight: bold;
 color: #C0C0C0; /* Text / Secondary Information */
@@ -104,6 +104,11 @@ gap: 5px;
 
 .turn-tracker #currentTurn {
 color: #FFD700;
+}
+
+.overall-total-rank span { /* Style for the actual total rank number */
+color: #FFD700; /* Primary Accent (Electric Yellow/Gold) */
+font-size: 1.2em; /* Slightly larger for emphasis */
 }
 
 #pointLimitInput {
@@ -187,61 +192,20 @@ text-shadow: 0 0 8px rgba(255, 215, 0, 0.6); /* Added glow */
 /* Removed flex properties from .player-orders directly */
 }
 
-/* New Order Token Styles */
-#orderTokensContainer {
-display: flex; /* Make it a flex container */
-flex-wrap: wrap; /* Allow wrapping */
-justify-content: center; /* Center items */
-align-items: center; /* Align items vertically */
-gap: 8px; /* Space between tokens */
-margin-top: 10px; /* Space from player name/title */
+.player-orders button { /* Specific styles for buttons within player-orders */
+background-color: #00BFFF; /* Order Controls (Electric Blue) */
+color: #1A1A1A; /* Dark text for contrast */
+box-shadow: 0 0 5px rgba(0, 191, 255, 0.5);
+padding: 8px 12px; /* Slightly larger padding for better click area */
+font-size: 0.9em; /* Slightly smaller font for better fit */
 }
 
-.order-token {
-width: 40px; /* Size of the token */
-height: 40px;
-border-radius: 50%; /* Make it round */
-display: flex;
-justify-content: center;
-align-items: center;
-font-size: 1.2em;
-font-weight: bold;
-cursor: pointer;
-transition: background-color 0.2s ease, box-shadow 0.2s ease;
-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-border: none; /* Remove default button border */
-position: relative; /* For the 'X' content */
+.player-orders button:hover {
+background-color: #00A0D0; /* Darker Electric Blue */
+box-shadow: 0 0 10px rgba(0, 191, 255, 0.8);
 }
 
-.order-token.available {
-background-color: #00FF00; /* Acid Green for available */
-color: #1A1A1A; /* Dark text */
-box-shadow: 0 0 8px rgba(0, 255, 0, 0.7);
-}
-
-.order-token.available:hover {
-background-color: #00E000;
-box-shadow: 0 0 12px rgba(0, 255, 0, 0.9);
-}
-
-.order-token.used {
-background-color: #FF00FF; /* Hot Pink for used */
-color: #1A1A1A; /* Dark text */
-box-shadow: 0 0 8px rgba(255, 0, 255, 0.7);
-}
-
-.order-token.used:hover {
-background-color: #E000E0;
-box-shadow: 0 0 12px rgba(255, 0, 255, 0.9);
-}
-
-.order-token.used::before { /* Add an 'X' for used tokens */
-content: 'X';
-position: absolute;
-font-size: 1.5em;
-color: #1A1A1A; /* Dark 'X' */
-}
-/* End New Order Token Styles */
+/* Removed orders-used-display styles */
 
 .squad-controls {
 text-align: center;
