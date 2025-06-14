@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tavern Brawl Tracker - Single Player</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Tavern Brawl Tracker</h1>
+
+    <!-- New Dice Roller Section -->
+    <div class="dice-roller-section">
+        <div class="dice-buttons">
+            <button class="roll-dice-btn" data-num-dice="1">Roll 1d20</button>
+            <button class="roll-dice-btn" data-num-dice="2">Roll 2d20</button>
+            <button class="roll-dice-btn" data-num-dice="3">Roll 3d20</button>
+        </div>
+        <div class="dice-results">
+            Results: <span id="diceResultsDisplay"></span>
+        </div>
+    </div>
+    <!-- End New Dice Roller Section -->
+
+    <div class="game-controls">
+        <div class="turn-tracker">
+            Turn: <span id="currentTurn">1</span> / 3
+            <button id="nextTurnBtn">Next Turn</button>
+        </div>
+        <div class="point-limit-control">
+            Point Limit: <input type="number" id="pointLimitInput" value="4" min="1" max="10">
+        </div>
+        <button id="resetGameBtn">Reset Game</button>
+    </div>
+
+    <div class="player-panel single-player-panel" id="player1Panel" data-player-id="1">
+        <div class="player-name-input">
+            Player Name: <input type="text" id="playerNameInput" value="Player 1">
+        </div>
+        <div class="player-orders">
+            <!-- Orders will be dynamically generated here -->
+            <div id="orderTokensContainer"></div>
+        </div>
+        <div class="squad-controls">
+            <button class="add-model-btn" data-type="small">Add Small (1pt)</button>
+            <button class="add-model-btn" data-type="large">Add Large (2pt)</button>
+            <div class="points-spent-display">Points: <span id="player1PointsSpent">0</span> / <span class="player-point-limit">4</span></div>
+            <div class="total-rank-display">Total Rank: <span id="player1TotalRank">0</span></div>
+        </div>
+        <div class="squad-list" id="player1Squad"></div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

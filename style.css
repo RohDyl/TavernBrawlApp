@@ -1,0 +1,427 @@
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background-color: #1A1A1A; /* Deep Background */
+color: #F0F0F0; /* Text / Primary Information */
+margin: 0;
+padding: 10px; /* Reduced padding for mobile */
+display: flex;
+justify-content: center;
+align-items: flex-start;
+min-height: 100vh;
+box-sizing: border-box;
+}
+
+.container {
+background-color: #2A2A2A; /* Secondary Background */
+border-radius: 10px;
+padding: 15px; /* Reduced padding for mobile */
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Stronger shadow for depth */
+width: 100%;
+max-width: 600px;
+box-sizing: border-box;
+}
+
+h1 {
+text-align: center;
+color: #FFD700; /* Primary Accent (Electric Yellow/Gold) */
+margin-bottom: 20px; /* Reduced margin */
+font-size: 2em; /* Adjusted font size for mobile */
+text-shadow: 0 0 8px rgba(255, 215, 0, 0.7); /* Added glow for neon feel */
+}
+
+/* New Dice Roller Section Styles */
+.dice-roller-section {
+background-color: #2A2A2A; /* Secondary Background */
+border-radius: 8px;
+padding: 10px; /* Reduced padding */
+margin-bottom: 20px; /* Reduced margin */
+text-align: center;
+box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.dice-buttons {
+display: flex;
+justify-content: center;
+gap: 8px; /* Reduced gap */
+margin-bottom: 10px; /* Reduced margin */
+flex-wrap: wrap;
+}
+
+.dice-buttons .roll-dice-btn { /* Specific style for these roll buttons */
+background-color: #FF8C00; /* Vibrant Orange */
+color: #1A1A1A;
+font-weight: bold;
+box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
+}
+
+.dice-buttons .roll-dice-btn:hover {
+background-color: #E07B00; /* Darker Orange */
+box-shadow: 0 0 10px rgba(255, 140, 0, 0.8);
+}
+
+.dice-results {
+font-size: 1.2em; /* Adjusted font size */
+font-weight: bold;
+color: #C0C0C0; /* Default text color */
+}
+
+.dice-results #diceResultsDisplay {
+color: #FF4500; /* Bright Neon Orange for results */
+text-shadow: 0 0 8px rgba(255, 69, 0, 0.8); /* Glow effect */
+}
+/* End New Dice Roller Section Styles */
+
+.player-panel h2 {
+color: #FF8C00; /* Primary Accent (Vibrant Orange) */
+text-align: center;
+margin-top: 0;
+margin-bottom: 15px; /* Reduced margin */
+font-size: 1.5em; /* Adjusted font size */
+text-shadow: 0 0 6px rgba(255, 140, 0, 0.6);
+}
+
+.game-controls {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px; /* Reduced margin */
+padding: 10px; /* Reduced padding */
+background-color: #2A2A2A;
+border-radius: 8px;
+box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+flex-wrap: wrap;
+gap: 10px;
+}
+
+.turn-tracker, .point-limit-control {
+font-size: 1em; /* Adjusted font size */
+font-weight: bold;
+color: #C0C0C0; /* Text / Secondary Information */
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.turn-tracker #currentTurn {
+color: #FFD700;
+}
+
+#pointLimitInput {
+width: 40px; /* Adjusted width */
+padding: 4px; /* Adjusted padding */
+font-size: 0.8em; /* Adjusted font size */
+}
+
+button {
+background-color: #00FF00; /* General Action (Acid Green) */
+color: #1A1A1A; /* Dark text for contrast */
+border: none;
+padding: 10px 15px;
+border-radius: 5px;
+cursor: pointer;
+font-size: 1em;
+transition: background-color 0.2s ease, box-shadow 0.2s ease; /* Added box-shadow transition */
+box-shadow: 0 0 5px rgba(0, 255, 0, 0.5); /* Initial glow */
+}
+
+button:hover {
+background-color: #00E000; /* Darker Acid Green */
+box-shadow: 0 0 10px rgba(0, 255, 0, 0.8); /* Stronger glow on hover */
+}
+
+button:active {
+background-color: #00FF00;
+transform: translateY(1px);
+box-shadow: 0 0 3px rgba(0, 255, 0, 0.3); /* Reduced glow on active */
+}
+
+button:disabled {
+background-color: #404040; /* Darker grey */
+cursor: not-allowed;
+box-shadow: none;
+opacity: 0.6;
+}
+
+#resetGameBtn {
+background-color: #FF00FF; /* Destructive (Hot Pink/Magenta) */
+box-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+}
+
+#resetGameBtn:hover {
+background-color: #E000E0; /* Darker Hot Pink */
+box-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+}
+
+/* Single player panel adjustments */
+.player-panel.single-player-panel {
+background-color: #2A2A2A; /* Secondary Background */
+border-radius: 8px;
+padding: 15px; /* Reduced padding */
+box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+width: 100%;
+max-width: 500px; /* Set a max-width for the panel itself */
+margin: 15px auto 0 auto; /* Center horizontally with auto margins */
+}
+
+.player-name-input {
+font-size: 1.1em; /* Adjusted font size */
+font-weight: bold;
+color: #C0C0C0; /* Text / Secondary Information */
+margin-bottom: 15px; /* Reduced margin */
+text-align: center;
+}
+
+.player-name-input input {
+width: 120px; /* Adjusted width */
+padding: 4px; /* Adjusted padding */
+font-size: 0.9em; /* Adjusted font size */
+}
+
+.player-orders {
+text-align: center;
+font-size: 1.5em; /* Adjusted font size */
+font-weight: bold;
+margin-bottom: 20px; /* Reverted margin */
+color: #FFD700; /* Primary Accent (Electric Yellow/Gold) */
+text-shadow: 0 0 8px rgba(255, 215, 0, 0.6); /* Added glow */
+/* Removed flex properties from .player-orders directly */
+}
+
+/* New Order Token Styles */
+#orderTokensContainer {
+display: flex; /* Make it a flex container */
+flex-wrap: wrap; /* Allow wrapping */
+justify-content: center; /* Center items */
+align-items: center; /* Align items vertically */
+gap: 8px; /* Space between tokens */
+margin-top: 10px; /* Space from player name/title */
+}
+
+.order-token {
+width: 40px; /* Size of the token */
+height: 40px;
+border-radius: 50%; /* Make it round */
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 1.2em;
+font-weight: bold;
+cursor: pointer;
+transition: background-color 0.2s ease, box-shadow 0.2s ease;
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+border: none; /* Remove default button border */
+position: relative; /* For the 'X' content */
+}
+
+.order-token.available {
+background-color: #00FF00; /* Acid Green for available */
+color: #1A1A1A; /* Dark text */
+box-shadow: 0 0 8px rgba(0, 255, 0, 0.7);
+}
+
+.order-token.available:hover {
+background-color: #00E000;
+box-shadow: 0 0 12px rgba(0, 255, 0, 0.9);
+}
+
+.order-token.used {
+background-color: #FF00FF; /* Hot Pink for used */
+color: #1A1A1A; /* Dark text */
+box-shadow: 0 0 8px rgba(255, 0, 255, 0.7);
+}
+
+.order-token.used:hover {
+background-color: #E000E0;
+box-shadow: 0 0 12px rgba(255, 0, 255, 0.9);
+}
+
+.order-token.used::before { /* Add an 'X' for used tokens */
+content: 'X';
+position: absolute;
+font-size: 1.5em;
+color: #1A1A1A; /* Dark 'X' */
+}
+/* End New Order Token Styles */
+
+.squad-controls {
+text-align: center;
+margin-bottom: 15px; /* Reduced margin */
+padding-bottom: 10px; /* Reduced padding */
+border-bottom: 1px solid #404040; /* Darker border */
+}
+
+.squad-controls button {
+background-color: #8A2BE2; /* Add Model (Vibrant Purple) */
+color: #F0F0F0; /* Light text for contrast */
+box-shadow: 0 0 5px rgba(138, 43, 226, 0.5);
+}
+
+.squad-controls button:hover {
+background-color: #7A1BD2; /* Darker Vibrant Purple */
+box-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
+}
+
+.points-spent-display, .total-rank-display {
+font-weight: bold;
+color: #C0C0C0; /* Text / Secondary Information */
+margin-top: 10px; /* Reverted margin */
+font-size: 0.9em; /* Adjusted font size */
+}
+
+.points-spent-display span {
+color: #FFD700; /* Primary Accent (Electric Yellow/Gold) */
+}
+
+.model-card {
+background-color: #2A2A2A; /* Secondary Background */
+border-radius: 5px;
+padding: 8px; /* Reduced padding */
+margin-bottom: 8px; /* Reduced margin */
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: center;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.model-card.ko {
+opacity: 0.5;
+text-decoration: line-through;
+background-color: #404040; /* Darker grey for KO background */
+}
+
+.model-info {
+flex-grow: 1;
+min-width: 120px; /* Adjusted min-width */
+font-size: 0.9em; /* Adjusted font size */
+}
+
+.model-info span {
+font-weight: bold;
+color: #FFD700; /* Primary Accent (Electric Yellow/Gold) */
+}
+
+.model-controls {
+display: flex;
+flex-direction: row; /* Keep main controls in a row */
+align-items: center;
+gap: 5px;
+flex-wrap: wrap;
+}
+
+.model-controls .rank-input-group { /* Group for Rank input and Roll button */
+display: flex;
+flex-direction: column; /* Stack input and button vertically */
+align-items: flex-start; /* Align to the left within its group */
+gap: 2px; /* Small gap between input and button */
+}
+
+.model-controls button {
+background-color: #606060; /* Neutral Grey for most model controls */
+color: #F0F0F0; /* Light text for contrast */
+box-shadow: none; /* Remove default button glow */
+}
+
+.model-controls button:hover {
+background-color: #808080; /* Lighter Neutral Grey */
+box-shadow: none;
+}
+
+.model-controls input[type="number"] {
+width: 50px; /* Fixed width for input */
+padding: 5px;
+border: 1px solid #404040; /* Darker border */
+border-radius: 3px;
+background-color: #1A1A1A; /* Deep Background */
+color: #F0F0F0; /* Text / Primary Information */
+font-size: 0.9em;
+text-align: center;
+}
+
+/* BB Button Styling */
+.model-controls .lieutenant-toggle {
+background-color: #505050; /* Darker Grey when NOT selected */
+transition: background-color 0.2s ease, box-shadow 0.2s ease;
+color: #F0F0F0; /* Light text for contrast */
+text-shadow: none; /* Remove glow when not selected */
+}
+
+.model-controls .lieutenant-toggle.is-lieutenant {
+background-color: #00FFFF; /* Bright Neon Blue when selected */
+color: #1A1A1A; /* Very dark text for contrast */
+text-shadow: 0 0 8px rgba(0, 255, 255, 0.8); /* Stronger glow */
+box-shadow: 0 0 10px rgba(0, 255, 255, 0.8); /* Stronger glow */
+}
+
+.model-controls .lieutenant-toggle.is-lieutenant:hover {
+background-color: #00E0E0; /* Slightly darker neon blue on hover */
+box-shadow: 0 0 15px rgba(0, 255, 255, 1); /* Even stronger glow on hover */
+}
+
+/* KO Button Styling */
+.model-controls .ko-toggle {
+background-color: #FF00FF; /* Destructive (Hot Pink/Magenta) */
+box-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+}
+
+.model-controls .ko-toggle.is-ko {
+background-color: #E000E0; /* Darker Hot Pink */
+box-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+}
+
+/* Damage Buttons Styling */
+.damage-buttons { /* Added this class to the div containing damage buttons */
+display: flex; /* Make damage buttons row */
+gap: 5px;
+}
+.damage-buttons button {
+font-weight: bold;
+box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); /* General red glow */
+}
+/* Specific colors for -3 and -6 */
+.damage-buttons button[data-damage="-3"] {
+background-color: #FF4500; /* Bright Neon Orange/Red for -3 */
+color: #1A1A1A;
+}
+.damage-buttons button[data-damage="-3"]:hover {
+background-color: #E03D00;
+box-shadow: 0 0 10px rgba(255, 69, 0, 0.8);
+}
+.damage-buttons button[data-damage="-6"] {
+background-color: #B22222; /* Firebrick Red for -6 (rich, dark red) */
+color: #F0F0F0; /* Light text for contrast */
+box-shadow: 0 0 5px rgba(178, 34, 34, 0.5);
+}
+.damage-buttons button[data-damage="-6"]:hover {
+background-color: #991E1E;
+box-shadow: 0 0 10px rgba(178, 34, 34, 0.8);
+}
+
+.hits-taken-display {
+font-size: 0.9em;
+color: #C0C0C0; /* Text / Secondary Information */
+margin-left: 10px;
+}
+
+/* Style for Roll Rank button */
+.roll-rank-btn {
+background-color: #FFD700; /* Electric Yellow/Gold */
+color: #1A1A1A; /* Dark text for contrast */
+box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+width: 50px; /* Match the width of the input */
+padding: 5px 8px; /* Adjust padding to fit text better */
+font-size: 0.8em; /* Adjust font size to fit text better */
+text-align: center; /* Center text */
+}
+.roll-rank-btn:hover {
+background-color: #E0C000; /* Darker Yellow/Gold */
+box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+.game-controls {
+    flex-direction: column;
+    gap: 15px;
+}
+}
