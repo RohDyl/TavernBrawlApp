@@ -2,10 +2,12 @@
 body {
 font-family: 'Roboto Mono', monospace, 'Courier New', Courier, sans-serif; /* Monospaced font for receipt feel */
 background-color: #3D2B1F; /* Dark wood brown for bar counter */
-background-image: 
-    linear-gradient(rgba(0,0,0,0.3) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.3) 1px, transparent 1px); /* Subtle wood grain texture */
-background-size: 50px 50px;
+
+/* Background image for wood texture - REPLACE WITH YOUR IMAGE PATH */
+background-image: url('/Users/dylan.rohleder/Library/CloudStorage/OneDrive-Ogilvy/Desktop/Game Versions/Images/wood_texture.jpg'); 
+background-repeat: repeat;
+background-size: 1000px 1000px; /* Adjust size to make it distressed */
+
 color: #1A1A1A; /* Dark text for receipt paper */
 margin: 0;
 padding: 20px 10px; /* Padding around the receipt */
@@ -25,8 +27,15 @@ box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Lift off the counter */
 width: 100%;
 max-width: 800px; /* Wider for two columns */
 box-sizing: border-box;
-position: relative; /* For tear effect */
+position: relative; /* For tear effect and smudges */
 overflow: hidden; /* Hide overflow from tear effect */
+
+/* Subtle crinkle and smudge effect - REPLACE WITH YOUR IMAGE PATH */
+background-image: url('../images/paper_crinkle.png'); 
+background-repeat: repeat;
+background-size: 150px 150px; /* Adjust size for desired density */
+opacity: 0.95; /* Make the paper slightly transparent to show background if needed */
+filter: brightness(1.02) contrast(1.02); /* Slightly enhance paper color */
 }
 
 /* --- Receipt Tear Effect (Top and Bottom) --- */
