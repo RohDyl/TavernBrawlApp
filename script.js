@@ -4,6 +4,8 @@ const nextTurnBtn = document.getElementById('nextTurnBtn');
 const resetGameBtn = document.getElementById('resetGameBtn');
 const pointLimitInput = document.getElementById('pointLimitInput');
 const playerNameInput = document.getElementById('playerNameInput');
+const maxTurnsInput = document.getElementById('maxTurnsInput'); // New: Max Turns Input
+const maxTurnsDisplay = document.getElementById('maxTurnsDisplay'); // New: Max Turns Display
 
 const orderTokensContainer = document.getElementById('orderTokensContainer');
 
@@ -24,6 +26,7 @@ const MAX_RANK_ROLLS = 3;
 
 let game = {
     currentTurn: 1,
+    maxTurns: parseInt(maxTurnsInput.value), // New: Initialize maxTurns
     pointLimit: parseInt(pointLimitInput.value),
     player: {
         name: playerNameInput.value,
@@ -40,6 +43,7 @@ let game = {
 
 function updateUI() {
     currentTurnSpan.textContent = game.currentTurn;
+    maxTurnsDisplay.textContent = game.maxTurns; // Update max turns display
     playerPointLimitSpans.forEach(span => span.textContent = game.pointLimit);
     updatePlayerSpecificUI();
 }
@@ -125,6 +129,7 @@ function calculatePointsSpent() {
 function resetGame() {
     game = {
         currentTurn: 1,
+        maxTurns: parseInt(maxTurnsInput.value), // Reset maxTurns to current input value
         pointLimit: parseInt(pointLimitInput.value),
         player: {
             name: playerNameInput.value,
@@ -151,13 +156,29 @@ playerNameInput.addEventListener('change', (e) => {
     game.player.name = e.target.value;
 });
 
+// Max Turns Input Listener
+maxTurnsInput.addEventListener('change', () => {
+    let newMaxTurns = parseInt(maxTurnsInput.value);
+    if (isNaN(newMaxTurns) || newMaxTurns < 1) newMaxTurns = 1;
+    if (newMaxTurns > 10) newMaxTurns = 10; // Cap max turns at 10, or whatever is reasonable
+    maxTurnsInput.value = newMaxTurns; // Ensure input reflects valid value
+    game.maxTurns = newMaxTurns;
+    
+    // If current turn exceeds new max turns, reset to 1
+    if (game.currentTurn > game.maxTurns) {
+        game.currentTurn = 1;
+        calculateOrders(); // Recalculate orders for new turn
+    }
+    updateUI(); // Update UI to reflect new max turns
+});
+
 nextTurnBtn.addEventListener('click', () => {
-    if (game.currentTurn < 3) {
+    if (game.currentTurn < game.maxTurns) { // Check against game.maxTurns
         game.currentTurn++;
         calculateOrders(); // This will reset orders to available for the new turn
         updateUI();
     } else {
-        alert("Game over! Max 3 turns reached.");
+        alert(`Game over! Max ${game.maxTurns} turns reached.`); // Use game.maxTurns in alert
     }
 });
 
@@ -197,7 +218,7 @@ document.querySelectorAll('.add-model-btn').forEach(button => {
         const cost = MODEL_COSTS[type];
 
         if (game.player.pointsSpent + cost > game.pointLimit) {
-            alert(`Cannot add ${type} model. Exceeds point limit of ${game.player.pointsSpent}. Current points: ${game.player.pointsSpent}`);
+            alert(`Cannot add ${type} model. Exceeds point limit of ${game.pointLimit}. Current points: ${game.player.pointsSpent}`);
             return;
         }
 
