@@ -197,7 +197,7 @@ document.querySelectorAll('.add-model-btn').forEach(button => {
         const cost = MODEL_COSTS[type];
 
         if (game.player.pointsSpent + cost > game.pointLimit) {
-            alert(`Cannot add ${type} model. Exceeds point limit of ${game.pointLimit}. Current points: ${game.player.pointsSpent}`);
+            alert(`Cannot add ${type} model. Exceeds point limit of ${game.player.pointsSpent}. Current points: ${game.player.pointsSpent}`);
             return;
         }
 

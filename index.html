@@ -25,8 +25,11 @@
 
     <div class="game-controls">
         <div class="turn-tracker">
-            Turn: <span id="currentTurn">1</span> / 3
+            Turn: <span id="currentTurn">1</span> / <span id="maxTurnsDisplay">3</span> <!-- Updated -->
             <button id="nextTurnBtn">Next Turn</button>
+        </div>
+        <div class="max-turns-control"> <!-- New -->
+            Max Turns: <input type="number" id="maxTurnsInput" value="3" min="1" max="10"> <!-- New -->
         </div>
         <div class="point-limit-control">
             Point Limit: <input type="number" id="pointLimitInput" value="4" min="1" max="10">
