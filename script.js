@@ -4,8 +4,8 @@ const nextTurnBtn = document.getElementById('nextTurnBtn');
 const resetGameBtn = document.getElementById('resetGameBtn');
 const pointLimitInput = document.getElementById('pointLimitInput');
 const playerNameInput = document.getElementById('playerNameInput');
-const maxTurnsInput = document.getElementById('maxTurnsInput'); // Re-added this variable
-const maxTurnsDisplay = document.getElementById('maxTurnsDisplay'); // Re-added this variable
+const maxTurnsInput = document.getElementById('maxTurnsInput'); 
+const maxTurnsDisplay = document.getElementById('maxTurnsDisplay'); 
 
 const orderTokensContainer = document.getElementById('orderTokensContainer');
 
@@ -26,7 +26,7 @@ const MAX_RANK_ROLLS = 3;
 
 let game = {
     currentTurn: 1,
-    maxTurns: parseInt(maxTurnsInput.value), // Initialize maxTurns from input
+    maxTurns: parseInt(maxTurnsInput.value), 
     pointLimit: parseInt(pointLimitInput.value),
     player: {
         name: playerNameInput.value,
@@ -43,7 +43,7 @@ let game = {
 
 function updateUI() {
     currentTurnSpan.textContent = game.currentTurn;
-    maxTurnsDisplay.textContent = game.maxTurns; // Update max turns display
+    maxTurnsDisplay.textContent = game.maxTurns; 
     playerPointLimitSpans.forEach(span => span.textContent = game.pointLimit);
     updatePlayerSpecificUI();
 }
@@ -129,7 +129,7 @@ function calculatePointsSpent() {
 function resetGame() {
     game = {
         currentTurn: 1,
-        maxTurns: parseInt(maxTurnsInput.value), // Reset maxTurns to current input value
+        maxTurns: parseInt(maxTurnsInput.value), 
         pointLimit: parseInt(pointLimitInput.value),
         player: {
             name: playerNameInput.value,
