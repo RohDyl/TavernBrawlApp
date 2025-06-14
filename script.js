@@ -4,8 +4,6 @@ const nextTurnBtn = document.getElementById('nextTurnBtn');
 const resetGameBtn = document.getElementById('resetGameBtn');
 const pointLimitInput = document.getElementById('pointLimitInput');
 const playerNameInput = document.getElementById('playerNameInput');
-const maxTurnsInput = document.getElementById('maxTurnsInput'); // New: Max Turns Input
-const maxTurnsDisplay = document.getElementById('maxTurnsDisplay'); // New: Max Turns Display
 
 const orderTokensContainer = document.getElementById('orderTokensContainer');
 
@@ -26,7 +24,7 @@ const MAX_RANK_ROLLS = 3;
 
 let game = {
     currentTurn: 1,
-    maxTurns: parseInt(maxTurnsInput.value), // New: Initialize maxTurns
+    maxTurns: parseInt(maxTurnsInput.value), // Initialize maxTurns
     pointLimit: parseInt(pointLimitInput.value),
     player: {
         name: playerNameInput.value,
@@ -218,7 +216,7 @@ document.querySelectorAll('.add-model-btn').forEach(button => {
         const cost = MODEL_COSTS[type];
 
         if (game.player.pointsSpent + cost > game.pointLimit) {
-            alert(`Cannot add ${type} model. Exceeds point limit of ${game.pointLimit}. Current points: ${game.player.pointsSpent}`);
+            alert(`Cannot add ${type} model. Exceeds point limit of ${game.player.pointsSpent}. Current points: ${game.player.pointsSpent}`);
             return;
         }
 

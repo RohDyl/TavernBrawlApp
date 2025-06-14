@@ -93,7 +93,7 @@ flex-wrap: wrap;
 gap: 10px;
 }
 
-.turn-tracker, .point-limit-control, .overall-total-rank, .max-turns-control { /* Added max-turns-control */
+.turn-tracker, .point-limit-control, .overall-total-rank, .max-turns-control { /* Added overall-total-rank */
 font-size: 1em; /* Adjusted font size */
 font-weight: bold;
 color: #C0C0C0; /* Text / Secondary Information */
