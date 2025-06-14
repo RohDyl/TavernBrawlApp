@@ -337,7 +337,7 @@ document.getElementById('player1Panel').addEventListener('change', (e) => {
             
             playerTotalRankSpan.textContent = player.totalRank;
         }
-    }
+    } 
 });
 
 // Initial setup when the page loads
