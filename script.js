@@ -42,7 +42,7 @@ const MODEL_COSTS = {
 };
 
 const MAX_RANK_ROLLS = 3; 
-Add let usedMugshots = [];
+
 let game = {
     currentTurn: 1,
     maxTurns: parseInt(maxTurnsInput.value), 
@@ -114,15 +114,15 @@ function updatePlayerSpecificUI(playerId) {
         modelCard.dataset.playerId = playerId; // Add player ID to model card
         
         modelCard.innerHTML = `
-           <div class="model-info">
-//     <img src="${model.mugshot}" alt="${model.name}" class="mugshot-img">
-//     <div> /* Wrap existing text in a div to align with image */
-//         ${model.name} <br>
-//         Rank: <span class="model-rank-display">${model.rank}</span>
-//         <span class="hits-taken-display">(Hits: ${model.hitsTaken})</span>
-//         <span class="rank-rolls-display">(Rolls: ${model.rankRollsUsed}/${MAX_RANK_ROLLS})</span>
-//     </div>
-// </div>
+            <div class="model-info">
+                <img src="${model.mugshot}" alt="${model.name}" class="mugshot-img"> <!-- Mugshot Image -->
+                <div>
+                    ${model.name} <br>
+                    Rank: <span class="model-rank-display">${model.rank}</span>
+                    <span class="hits-taken-display">(Hits: ${model.hitsTaken})</span>
+                    <span class="rank-rolls-display">(Rolls: ${model.rankRollsUsed}/${MAX_RANK_ROLLS})</span>
+                </div>
+            </div>
             <div class="model-controls">
                 <div class="rank-input-group">
                     <input type="number" class="rank-input" value="${model.rank}" min="0" max="20">
@@ -393,7 +393,6 @@ function resetGame() {
     calculateOrders(1); 
     calculateOrders(2); 
     updateUI(); 
-usedMugshots = []; // Clear used mugshots on game reset
 }
 
 // --- Utility Function ---
@@ -682,10 +681,7 @@ const SCRAPPY_NAMES = [
 // Array to keep track of used names to prevent duplicates
 let usedNames = [];
 
-const nameAndMugshot = getRandomName(type);
-name: nameAndMugshot.name,
-mugshot: nameAndMugshot.mugshot,
-{
+function getRandomName(type) {
 let namesList;
 if (type === 'large') {
     namesList = BRUTISH_NAMES;
@@ -693,22 +689,21 @@ if (type === 'large') {
     namesList = SCRAPPY_NAMES;
 }
 
-// Filter out names whose mugshots are already used
-let availableNames = namesList.filter(name => !usedMugshots.includes(getMugshotFilename(name)));
+// Filter out names already used
+let availableNames = namesList.filter(name => !usedNames.includes(name));
 
-// If all names are used, reset the usedMugshots array (or handle as an error)
+// If all names are used, reset the usedNames array (or handle as an error)
 if (availableNames.length === 0) {
-    usedMugshots = []; // Reset for a new cycle
+    usedNames = []; // Reset for a new cycle
     availableNames = namesList; // All names are now available again
-    console.warn("All unique mugshots used. Resetting mugshot pool.");
+    console.warn("All unique names used. Resetting name pool.");
 }
 
 const randomIndex = Math.floor(Math.random() * availableNames.length);
 const selectedName = availableNames[randomIndex];
-const mugshotPath = getMugshotFilename(selectedName);
 
-usedMugshots.push(mugshotPath); // Add the selected mugshot path to the used list
-return { name: selectedName, mugshot: mugshotPath }; // Return object with name and mugshot
+usedNames.push(selectedName); // Add the selected name to the used list
+return selectedName;
 }
 // --- End Random Name Generator ---
 
