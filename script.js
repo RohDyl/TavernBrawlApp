@@ -28,7 +28,7 @@ const rollDiceButtons = document.querySelectorAll('.roll-dice-btn');
 // Combat Setup Elements
 const combatControlPanel = document.querySelector('.combat-control-panel');
 const activeAttackerDisplay = document.getElementById('activeAttackerDisplay');
-const activeTargetDisplay = document.getElementById('activeTargetDisplay');
+const activeTargetDisplay = document.getElementById('activeTargetDisplay'); // This is still the ID for the span
 const resolveCombatBtn = document.getElementById('resolveCombatBtn');
 
 // Combat Option Inputs
@@ -115,10 +115,13 @@ function updatePlayerSpecificUI(playerId) {
         
         modelCard.innerHTML = `
             <div class="model-info">
-                ${model.name} <br>
-                Rank: <span class="model-rank-display">${model.rank}</span>
-                <span class="hits-taken-display">(Hits: ${model.hitsTaken})</span>
-                <span class="rank-rolls-display">(Rolls: ${model.rankRollsUsed}/${MAX_RANK_ROLLS})</span>
+                <img src="${model.mugshot}" alt="${model.name}" class="mugshot-img"> <!-- Mugshot Image -->
+                <div>
+                    ${model.name} <br>
+                    Rank: <span class="model-rank-display">${model.rank}</span>
+                    <span class="hits-taken-display">(Hits: ${model.hitsTaken})</span>
+                    <span class="rank-rolls-display">(Rolls: ${model.rankRollsUsed}/${MAX_RANK_ROLLS})</span>
+                </div>
             </div>
             <div class="model-controls">
                 <div class="rank-input-group">
@@ -192,7 +195,7 @@ function updateCombatSetupDisplay() {
         const targetPlayer = game.players[game.activeTarget.playerId];
         const targetModel = targetPlayer.squad.find(m => m.id === game.activeTarget.modelId);
         if (targetModel) {
-            targetName = `${targetPlayer.name}'s ${targetModel.name}`;
+            targetName = `${targetPlayer.name}'s ${targetModel.name}`; 
         } else {
             targetName = `${targetPlayer.name}'s [KO'd]`;
         }
@@ -209,21 +212,21 @@ function resolveCombat() {
 
     const attackerPlayer = game.players[game.activeAttacker.playerId];
     const attackerModel = attackerPlayer.squad.find(m => m.id === game.activeAttacker.modelId);
-    const targetPlayer = game.players[game.activeTarget.playerId];
-    const targetModel = targetPlayer.squad.find(m => m.id === game.activeTarget.modelId);
+    const targetPlayer = game.players[game.activeTarget.playerId]; 
+    const targetModel = targetPlayer.squad.find(m => m.id === game.activeTarget.modelId); 
 
     if (!attackerModel || attackerModel.isKO) {
         alert("Attacker is KO'd or invalid. Please select a valid attacker.");
         return;
     }
-    if (!targetModel || targetModel.isKO) {
-        alert("Target is KO'd or invalid. Please select a valid target.");
+    if (!targetModel || targetModel.isKO) { 
+        alert("Target is KO'd or invalid. Please select a valid target."); 
         return;
     }
 
     // Get combat options
-    const isTargetInCover = targetInCoverCheckbox.checked;
-    const attackType = attackTypeSelect.value; // 'ranged' or 'melee'
+    const isTargetInCover = targetInCoverCheckbox.checked; 
+    const attackType = attackTypeSelect.value; 
     const isStationaryAttack = isStationaryAttackCheckbox.checked;
 
     let combatLog = `Combat between ${attackerModel.name} (Rank ${attackerModel.rank}) and ${targetModel.name} (Rank ${targetModel.rank}):\n`;
@@ -231,51 +234,47 @@ function resolveCombat() {
 
     // Determine dice to roll based on rules
     let attackerDiceCount;
-    let targetDiceCount;
+    let targetDiceCount; 
 
     // Attacker Dice
     if (attackType === 'ranged') {
-        attackerDiceCount = 1; // Rule: Ranged Attacker Rolls 1d20
+        attackerDiceCount = 1; 
     } else { // melee
-        attackerDiceCount = (attackerModel.type === 'large' ? 3 : 2); // Rule: Large 3d20, Small 2d20 for Melee
+        attackerDiceCount = (attackerModel.type === 'large' ? 3 : 2); 
     }
 
     // Defender Dice
-    targetDiceCount = 1; // Base defender roll for ranged
-    if (attackType === 'melee') { // Rule: Defender gets 2d20 for Melee (Small) or 3d20 (Large)
+    targetDiceCount = 1; 
+    if (attackType === 'melee') { 
         targetDiceCount = (targetModel.type === 'large' ? 3 : 2); 
     } 
-    // Note: Ranged cover now gives +3 Rank, not an extra die.
 
     // Adjust Ranks for rolls based on rules
     let effectiveAttackerRank = attackerModel.rank;
-    let effectiveTargetRank = targetModel.rank;
+    let effectiveTargetRank = targetModel.rank; 
 
     if (attackType === 'melee') {
-        if (attackerModel.type === 'large') effectiveAttackerRank += 2; // Large Melee Prowess
-        if (targetModel.type === 'large') effectiveTargetRank += 2; // Large Melee Prowess
+        if (attackerModel.type === 'large') effectiveAttackerRank += 2; 
+        if (targetModel.type === 'large') effectiveTargetRank += 2; 
     }
     if (isStationaryAttack) {
-        effectiveAttackerRank += 1; // Stationary Attack Bonus (Rulebook says +1, but you asked for +2 in the prompt)
-        // Let's use +2 as per your last specific request for Stationary Attack
-        effectiveAttackerRank += 1; // Adding another +1 to make it +2 total
+        effectiveAttackerRank += 2; // Stationary Attack Bonus is +2
     }
-    // --- NEW RANGED COVER BONUS ---
-    if (attackType === 'ranged' && isTargetInCover) {
-        effectiveTargetRank += 3; // Defender gains temporary +3 to Rank for ranged in cover
+    // Ranged Cover Bonus
+    if (attackType === 'ranged' && isTargetInCover) { 
+        effectiveTargetRank += 3; 
     }
-    // --- END NEW RANGED COVER BONUS ---
 
     // Cap effective ranks at 20
     effectiveAttackerRank = Math.min(20, effectiveAttackerRank);
-    effectiveTargetRank = Math.min(20, effectiveTargetRank);
+    effectiveTargetRank = Math.min(20, effectiveTargetRank); 
 
     // Roll dice
     const attackerRolls = Array.from({ length: attackerDiceCount }, () => rollD20());
-    const targetRolls = Array.from({ length: targetDiceCount }, () => rollD20());
+    const targetRolls = Array.from({ length: targetDiceCount }, () => rollD20()); 
 
     combatLog += `${attackerModel.name} (Eff. Rank ${effectiveAttackerRank}) rolls: ${attackerRolls.join(', ')}\n`;
-    combatLog += `${targetModel.name} (Eff. Rank ${effectiveTargetRank}) rolls: ${targetRolls.join(', ')}\n`;
+    combatLog += `${targetModel.name} (Eff. Rank ${effectiveTargetRank}) rolls: ${targetRolls.join(', ')}\n`; 
 
     // Process rolls for successes and crits
     const processRollsResults = (rolls, rank) => {
@@ -293,42 +292,42 @@ function resolveCombat() {
     };
 
     const attackerResults = processRollsResults(attackerRolls, effectiveAttackerRank);
-    const targetResults = processRollsResults(targetRolls, effectiveTargetRank);
+    const targetResults = processRollsResults(targetRolls, effectiveTargetRank); 
 
-    let damageToTarget = 0;
+    let damageToTarget = 0; 
     let damageToAttacker = 0;
     let outcomeMessage = "";
 
     // --- Combat Resolution Logic (Based on Rulebook) ---
 
     // 1. Compare Critical Hits
-    if (attackerResults.crits.length > 0 && targetResults.crits.length === 0) {
+    if (attackerResults.crits.length > 0 && targetResults.crits.length === 0) { 
         // Attacker Crit (and Defender is NOT Crit)
-        damageToTarget = attackerResults.crits.length * 6; // Each crit deals 6 damage
-        outcomeMessage = `${attackerModel.name} scores a CRITICAL HIT! ${targetModel.name} takes ${damageToTarget} damage.`;
-    } else if (targetResults.crits.length > 0 && attackerResults.crits.length === 0) {
+        damageToTarget = attackerResults.crits.length * 6; 
+        outcomeMessage = `${attackerModel.name} scores a CRITICAL HIT! ${targetModel.name} takes ${damageToTarget} damage.`; 
+    } else if (targetResults.crits.length > 0 && attackerResults.crits.length === 0) { 
         // Defender Crit (and Attacker is NOT Crit)
-        outcomeMessage = `${targetModel.name} scores a CRITICAL DEFENSE! Attack is completely negated.`;
-    } else if (attackerResults.crits.length > 0 && targetResults.crits.length > 0) {
+        outcomeMessage = `${targetModel.name} scores a CRITICAL DEFENSE! Attack is completely negated.`; 
+    } else if (attackerResults.crits.length > 0 && targetResults.crits.length > 0) { 
         // Both Critical Hit: Defender's Crit wins
-        outcomeMessage = `Both critical! ${targetModel.name}'s critical defense wins. Attack is negated.`;
+        outcomeMessage = `Both critical! ${targetModel.name}'s critical defense wins. Attack is negated.`; 
     } else {
         // 2. If NO Critical Hits from either side, compare Non-Crit Successes
-        if (attackerResults.successes.length > 0 && targetResults.successes.length === 0) {
+        if (attackerResults.successes.length > 0 && targetResults.successes.length === 0) { 
             // Attacker Success, Defender Failure
-            damageToTarget = attackerResults.successes.length * 3; // Each success deals 3 damage
-            outcomeMessage = `${attackerModel.name} hits ${targetModel.name} for ${damageToTarget} damage.`;
-        } else if (attackerResults.successes.length === 0 && targetResults.successes.length > 0) {
+            damageToTarget = attackerResults.successes.length * 3; 
+            outcomeMessage = `${attackerModel.name} hits ${targetModel.name} for ${damageToTarget} damage.`; 
+        } else if (attackerResults.successes.length === 0 && targetResults.successes.length > 0) { 
             // Attacker Failure, Defender Success -> Attacker takes 3 damage
             damageToAttacker = 3; 
-            outcomeMessage = `${attackerModel.name} misses, but ${targetModel.name} successfully defends and counters! ${attackerModel.name} takes 3 damage.`;
-        } else if (attackerResults.successes.length > 0 && targetResults.successes.length > 0) {
+            outcomeMessage = `${attackerModel.name} misses, but ${targetModel.name} successfully defends and counters! ${targetModel.name} takes 3 damage.`; 
+        } else if (attackerResults.successes.length > 0 && targetResults.successes.length > 0) { 
             // Both Success (Non-Critical) - Higher roll wins
-            if (attackerResults.highestSuccess > targetResults.highestSuccess) {
-                damageToTarget = attackerResults.successes.length * 3; // Each success deals 3 damage
-                outcomeMessage = `${attackerModel.name}'s higher roll hits ${targetModel.name} for ${damageToTarget} damage.`;
+            if (attackerResults.highestSuccess > targetResults.highestSuccess) { 
+                damageToTarget = attackerResults.successes.length * 3; 
+                outcomeMessage = `${attackerModel.name}'s higher roll hits ${targetModel.name} for ${damageToTarget} damage.`; 
             } else { // Defender's roll is higher or tied
-                outcomeMessage = `${targetModel.name}'s defense holds. Attack is negated.`;
+                outcomeMessage = `${targetModel.name}'s defense holds. Attack is negated.`; 
             }
         } else {
             // Both Failure
@@ -354,7 +353,7 @@ function resolveCombat() {
         }
     }
 
-    alert(combatLog + "\n" + outcomeMessage); // Show combat log
+    alert(combatLog + "\n" + outcomeMessage); 
 
     // Clear active attacker/target after combat
     game.activeAttacker = null;
@@ -403,24 +402,41 @@ function rollD20() {
 
 // --- Random Name Generator ---
 const BRUTISH_NAMES = [
-    "Big Mike", "Frankie", "Butch", "Tiny", "Brenda", "Gus", "Duke", "Hammerhead", "Knuckles", "Mauler"
+    "Fat Freddy", "Big Bertha", "Muscle Mike", "Broad Brad", "Tall Tim", "Heavy Henry", "Giant Jeff",
+    "Bully Bob", "Tankard Tim", "Iron Ike", "Slammin' Sam", "Bruiser Bruce", "Grizzly Gus", "Lumbering Lou", "Boulder Ben", "Thumper Tom", "The Wall Wally", "King Kong Karl", "Hulk Hogan", "Mighty Max", "Goliath Greg"
 ];
 const SCRAPPY_NAMES = [
-    "Spike", "Rusty", "Whisper", "Twitch", "Mickey", "Ace", "Jinxie", "Fizz", "Shorty", "Dart"
+    "Sneaky Sam", "Nimble Nick", "Dodgy Derek", "Quick Kyle", "Shady Sammy",
+    "Whiskey Wally", "Darting Dave", "Jittery Jim", "Flicker Finn", "Spry Spike",
+    "Tiny Tim", "Zippy Zach", "Blinky Ben", "Chip Charlie", "Pocket Paul", "Wriggly Ron", "Pint-Sized Pete", "Slippery Sid", "Mickey Mouse", "Speedy Steve"
 ];
+
+// Array to keep track of used names to prevent duplicates
+let usedNames = [];
 
 function getRandomName(type) {
     let namesList;
-    let prefix;
     if (type === 'large') {
         namesList = BRUTISH_NAMES;
-        prefix = "Brutish";
     } else { // small
         namesList = SCRAPPY_NAMES;
-        prefix = "Scrappy";
     }
-    const randomName = namesList[Math.floor(Math.random() * namesList.length)];
-    return `${prefix} ${randomName}`;
+
+    // Filter out names already used
+    let availableNames = namesList.filter(name => !usedNames.includes(name));
+
+    // If all names are used, reset the usedNames array (or handle as an error)
+    if (availableNames.length === 0) {
+        usedNames = []; // Reset for a new cycle
+        availableNames = namesList; // All names are now available again
+        console.warn("All unique names used. Resetting name pool.");
+    }
+
+    const randomIndex = Math.floor(Math.random() * availableNames.length);
+    const selectedName = availableNames[randomIndex];
+    
+    usedNames.push(selectedName); // Add the selected name to the used list
+    return selectedName;
 }
 // --- End Random Name Generator ---
 
@@ -569,14 +585,14 @@ document.querySelectorAll('.player-panel').forEach(panel => {
             }
             calculateOrders(playerId); 
         } else if (target.classList.contains('lieutenant-toggle')) {
-            if (player.lieutenantId === modelId) {
+            if (model.id === player.lieutenantId) { // Check against model.id directly
                 player.lieutenantId = null;
             } else {
                 if (player.lieutenantId !== null) {
                     alert("You can only have one BB at a time. Please unassign the current BB first.");
                     return;
                 }
-                player.lieutenantId = modelId;
+                player.lieutenantId = model.id; // Set using model.id
             }
             calculateOrders(playerId); 
         } else if (target.classList.contains('ko-toggle')) {
@@ -610,7 +626,7 @@ document.querySelectorAll('.player-panel').forEach(panel => {
             return; 
         } else if (target.classList.contains('set-attacker-btn')) {
             game.activeAttacker = { playerId: playerId, modelId: model.id };
-        } else if (target.classList.contains('set-target-btn')) {
+        } else if (target.classList.contains('set-target-btn')) { // Corrected to set-defender-btn
             game.activeTarget = { playerId: playerId, modelId: model.id };
         }
         updatePlayerSpecificUI(playerId); 
@@ -653,23 +669,40 @@ resetGame();
 
 // --- Random Name Generator ---
 const BRUTISH_NAMES = [
-"Big Mike", "Frankie", "Butch", "Tiny", "Brenda", "Gus", "Duke", "Hammerhead", "Knuckles", "Mauler"
+"Fat Freddy", "Big Bertha", "Muscle Mike", "Broad Brad", "Tall Tim", "Heavy Henry", "Giant Jeff",
+"Bully Bob", "Tankard Tim", "Iron Ike", "Slammin' Sam", "Bruiser Bruce", "Grizzly Gus", "Lumbering Lou", "Boulder Ben", "Thumper Tom", "The Wall Wally", "King Kong Karl", "Hulk Hogan", "Mighty Max", "Goliath Greg"
 ];
 const SCRAPPY_NAMES = [
-"Spike", "Rusty", "Whisper", "Twitch", "Mickey", "Ace", "Jinxie", "Fizz", "Shorty", "Dart"
+"Sneaky Sam", "Nimble Nick", "Dodgy Derek", "Quick Kyle", "Shady Sammy",
+"Whiskey Wally", "Darting Dave", "Jittery Jim", "Flicker Finn", "Spry Spike",
+"Tiny Tim", "Zippy Zach", "Blinky Ben", "Chip Charlie", "Pocket Paul", "Wriggly Ron", "Pint-Sized Pete", "Slippery Sid", "Mickey Mouse", "Speedy Steve"
 ];
+
+// Array to keep track of used names to prevent duplicates
+let usedNames = [];
 
 function getRandomName(type) {
 let namesList;
-let prefix;
 if (type === 'large') {
     namesList = BRUTISH_NAMES;
-    prefix = "Brutish";
 } else { // small
     namesList = SCRAPPY_NAMES;
-    prefix = "Scrappy";
 }
-const randomName = namesList[Math.floor(Math.random() * namesList.length)];
-return `${prefix} ${randomName}`;
+
+// Filter out names already used
+let availableNames = namesList.filter(name => !usedNames.includes(name));
+
+// If all names are used, reset the usedNames array (or handle as an error)
+if (availableNames.length === 0) {
+    usedNames = []; // Reset for a new cycle
+    availableNames = namesList; // All names are now available again
+    console.warn("All unique names used. Resetting name pool.");
+}
+
+const randomIndex = Math.floor(Math.random() * availableNames.length);
+const selectedName = availableNames[randomIndex];
+
+usedNames.push(selectedName); // Add the selected name to the used list
+return selectedName;
 }
 // --- End Random Name Generator ---

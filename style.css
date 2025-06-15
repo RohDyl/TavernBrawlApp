@@ -4,9 +4,10 @@ font-family: 'Roboto Mono', monospace, 'Courier New', Courier, sans-serif; /* Mo
 background-color: #3D2B1F; /* Dark wood brown for bar counter */
 
 /* Background image for wood texture - REPLACE WITH YOUR IMAGE PATH */
-background-image: url('/Users/dylan.rohleder/Library/CloudStorage/OneDrive-Ogilvy/Desktop/Game Versions/Images/wood_texture.jpg'); 
+background-image: url('./images/wood_texture.jpg'); 
 background-repeat: repeat;
-background-size: 1000px 1000px; /* Adjust size to make it distressed */
+background-size: 200px 200px; /* Adjust size to make it distressed */
+background-blend-mode: multiply; /* Blend with background-color for depth */
 
 color: #1A1A1A; /* Dark text for receipt paper */
 margin: 0;
@@ -31,9 +32,10 @@ position: relative; /* For tear effect and smudges */
 overflow: hidden; /* Hide overflow from tear effect */
 
 /* Subtle crinkle and smudge effect - REPLACE WITH YOUR IMAGE PATH */
-background-image: url('../images/paper_crinkle.png'); 
-background-repeat: repeat;
-background-size: 150px 150px; /* Adjust size for desired density */
+background-image: url('./images/paper_crinkle.png'); 
+background-repeat: no-repeat; /* Do not repeat the main texture */
+background-size: cover; /* Scale to cover the container */
+background-position: center center; /* Center the image */
 opacity: 0.95; /* Make the paper slightly transparent to show background if needed */
 filter: brightness(1.02) contrast(1.02); /* Slightly enhance paper color */
 }
@@ -62,14 +64,15 @@ background-position: 0 0;
 
 /* --- Header (Bar Name) --- */
 h1 {
+font-family: 'Bangers', cursive; /* Apply Bangers font to H1 */
 text-align: center;
 color: #1A1A1A; /* Dark text */
 margin-bottom: 20px;
-font-size: 1.8em; /* Smaller for receipt header */
-text-shadow: none; /* No neon glow on receipt text */
-border-bottom: 1px dashed #606060; /* Dashed line like a receipt */
+font-size: 2.5em; /* Larger for main title */
+text-shadow: none;
+border-bottom: 1px dashed #606060;
 padding-bottom: 10px;
-text-transform: uppercase; /* Common for receipt headers */
+text-transform: uppercase;
 letter-spacing: 1px;
 }
 
@@ -102,7 +105,7 @@ font-weight: bold;
 color: #00BFFF; /* Electric Blue for selected names */
 }
 
-.combat-options { /* New style for combat options */
+.combat-options {
 display: flex;
 flex-wrap: wrap;
 justify-content: center;
@@ -136,7 +139,6 @@ box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
 background-color: #E07B00;
 box-shadow: 0 0 10px rgba(255, 140, 0, 0.8);
 }
-/* --- End Combat Control Panel --- */
 
 /* --- General Button Styling (Stamping Effect) --- */
 button {
@@ -371,10 +373,22 @@ background-color: #C0C0C0;
 }
 
 .model-info {
+display: flex; /* Use flexbox for model info */
+align-items: center; /* Align items vertically */
 flex-grow: 1;
 min-width: 120px;
 font-size: 0.9em;
 color: #1A1A1A;
+}
+
+.model-info .mugshot-img { /* Style for the mugshot image */
+width: 40px; /* Size of the mugshot */
+height: 40px;
+border-radius: 50%; /* Make it round */
+object-fit: cover; /* Ensure image covers the area */
+border: 2px solid #606060; /* Border around mugshot */
+margin-right: 8px; /* Space between image and text */
+flex-shrink: 0; /* Prevent image from shrinking */
 }
 
 .model-info span {
