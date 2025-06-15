@@ -3,22 +3,22 @@ const currentTurnSpan = document.getElementById('currentTurn');
 const nextTurnBtn = document.getElementById('nextTurnBtn');
 const resetGameBtn = document.getElementById('resetGameBtn');
 const pointLimitInput = document.getElementById('pointLimitInput');
-const player1NameInput = document.getElementById('player1NameInput'); // Player 1 Name Input
-const player2NameInput = document.getElementById('player2NameInput'); // Player 2 Name Input
-const maxTurnsInput = document.getElementById('maxTurnsInput'); 
-const maxTurnsDisplay = document.getElementById('maxTurnsDisplay'); 
+const player1NameInput = document.getElementById('player1NameInput');
+const player2NameInput = document.getElementById('player2NameInput');
+const maxTurnsInput = document.getElementById('maxTurnsInput');
+const maxTurnsDisplay = document.getElementById('maxTurnsDisplay');
 
-const player1OrderTokensContainer = document.getElementById('player1OrderTokensContainer'); // Player 1 Order Tokens
-const player2OrderTokensContainer = document.getElementById('player2OrderTokensContainer'); // Player 2 Order Tokens
+const player1OrderTokensContainer = document.getElementById('player1OrderTokensContainer');
+const player2OrderTokensContainer = document.getElementById('player2OrderTokensContainer');
 
 const player1SquadDiv = document.getElementById('player1Squad');
-const player2SquadDiv = document.getElementById('player2Squad'); // Player 2 Squad Div
+const player2SquadDiv = document.getElementById('player2Squad');
 
 const player1TotalRankSpan = document.getElementById('player1TotalRank');
-const player2TotalRankSpan = document.getElementById('player2TotalRank'); // Player 2 Total Rank
+const player2TotalRankSpan = document.getElementById('player2TotalRank');
 
 const player1PointsSpentSpan = document.getElementById('player1PointsSpent');
-const player2PointsSpentSpan = document.getElementById('player2PointsSpent'); // Player 2 Points Spent
+const player2PointsSpentSpan = document.getElementById('player2PointsSpent');
 
 const playerPointLimitSpans = document.querySelectorAll('.player-point-limit');
 
@@ -28,7 +28,7 @@ const rollDiceButtons = document.querySelectorAll('.roll-dice-btn');
 // Combat Setup Elements
 const combatControlPanel = document.querySelector('.combat-control-panel');
 const activeAttackerDisplay = document.getElementById('activeAttackerDisplay');
-const activeTargetDisplay = document.getElementById('activeTargetDisplay'); // This is still the ID for the span
+const activeTargetDisplay = document.getElementById('activeTargetDisplay');
 const resolveCombatBtn = document.getElementById('resolveCombatBtn');
 
 // Combat Option Inputs
@@ -41,24 +41,24 @@ const MODEL_COSTS = {
     large: 2
 };
 
-const MAX_RANK_ROLLS = 3; 
+const MAX_RANK_ROLLS = 3;
 
 let game = {
     currentTurn: 1,
-    maxTurns: parseInt(maxTurnsInput.value), 
+    maxTurns: parseInt(maxTurnsInput.value),
     pointLimit: parseInt(pointLimitInput.value),
-    players: { // Reverted to two player objects
+    players: {
         1: {
             name: player1NameInput.value,
-            orders: [], 
+            orders: [],
             squad: [],
             lieutenantId: null,
             totalRank: 0,
             pointsSpent: 0
         },
         2: {
-            name: player2NameInput.value, 
-            orders: [], 
+            name: player2NameInput.value,
+            orders: [],
             squad: [],
             lieutenantId: null,
             totalRank: 0,
@@ -67,17 +67,17 @@ let game = {
     },
     nextModelId: 1,
     // Combat State
-    activeAttacker: null, // {playerId: 1, modelId: 5}
-    activeTarget: null,   // {playerId: 2, modelId: 3}
+    activeAttacker: null,
+    activeTarget: null,
 };
 
 // --- Core Functions ---
 
 function updateUI() {
     currentTurnSpan.textContent = game.currentTurn;
-    maxTurnsDisplay.textContent = game.maxTurns; 
+    maxTurnsDisplay.textContent = game.maxTurns;
     playerPointLimitSpans.forEach(span => span.textContent = game.pointLimit);
-    
+
     // Update UI for both players
     updatePlayerSpecificUI(1);
     updatePlayerSpecificUI(2);
@@ -88,7 +88,7 @@ function updateUI() {
 
 function updatePlayerSpecificUI(playerId) {
     const player = game.players[playerId];
-    
+
     // Update player name input
     const playerNameInputElem = playerId === 1 ? player1NameInput : player2NameInput;
     playerNameInputElem.value = player.name;
@@ -112,7 +112,7 @@ function updatePlayerSpecificUI(playerId) {
         modelCard.className = `model-card ${model.isKO ? 'ko' : ''}`;
         modelCard.dataset.modelId = model.id;
         modelCard.dataset.playerId = playerId; // Add player ID to model card
-        
+
         modelCard.innerHTML = `
             <div class="model-info">
                 <img src="${model.mugshot}" alt="${model.name}" class="mugshot-img"> <!-- Mugshot Image -->
@@ -154,17 +154,17 @@ function updatePlayerSpecificUI(playerId) {
 
 function calculateOrders(playerId) {
     const player = game.players[playerId];
-    let totalOrders = 0; 
+    let totalOrders = 0;
     const activeModels = player.squad.filter(model => !model.isKO);
-    totalOrders += activeModels.length; 
-    
+    totalOrders += activeModels.length;
+
     if (player.lieutenantId) {
         const lieutenant = player.squad.find(m => m.id === player.lieutenantId);
         if (lieutenant && !lieutenant.isKO) {
-            totalOrders += 1; 
+            totalOrders += 1;
         }
     }
-    player.orders = Array(totalOrders).fill(false); 
+    player.orders = Array(totalOrders).fill(false);
 }
 
 function calculateTotalRank(playerId) {
@@ -195,7 +195,7 @@ function updateCombatSetupDisplay() {
         const targetPlayer = game.players[game.activeTarget.playerId];
         const targetModel = targetPlayer.squad.find(m => m.id === game.activeTarget.modelId);
         if (targetModel) {
-            targetName = `${targetPlayer.name}'s ${targetModel.name}`; 
+            targetName = `${targetPlayer.name}'s ${targetModel.name}`;
         } else {
             targetName = `${targetPlayer.name}'s [KO'd]`;
         }
@@ -212,21 +212,21 @@ function resolveCombat() {
 
     const attackerPlayer = game.players[game.activeAttacker.playerId];
     const attackerModel = attackerPlayer.squad.find(m => m.id === game.activeAttacker.modelId);
-    const targetPlayer = game.players[game.activeTarget.playerId]; 
-    const targetModel = targetPlayer.squad.find(m => m.id === game.activeTarget.modelId); 
+    const targetPlayer = game.players[game.activeTarget.playerId];
+    const targetModel = targetPlayer.squad.find(m => m.id === game.activeTarget.modelId);
 
     if (!attackerModel || attackerModel.isKO) {
         alert("Attacker is KO'd or invalid. Please select a valid attacker.");
         return;
     }
-    if (!targetModel || targetModel.isKO) { 
-        alert("Target is KO'd or invalid. Please select a valid target."); 
+    if (!targetModel || targetModel.isKO) {
+        alert("Target is KO'd or invalid. Please select a valid target.");
         return;
     }
 
     // Get combat options
-    const isTargetInCover = targetInCoverCheckbox.checked; 
-    const attackType = attackTypeSelect.value; 
+    const isTargetInCover = targetInCoverCheckbox.checked;
+    const attackType = attackTypeSelect.value;
     const isStationaryAttack = isStationaryAttackCheckbox.checked;
 
     let combatLog = `Combat between ${attackerModel.name} (Rank ${attackerModel.rank}) and ${targetModel.name} (Rank ${targetModel.rank}):\n`;
@@ -234,47 +234,47 @@ function resolveCombat() {
 
     // Determine dice to roll based on rules
     let attackerDiceCount;
-    let targetDiceCount; 
+    let targetDiceCount;
 
     // Attacker Dice
     if (attackType === 'ranged') {
-        attackerDiceCount = 1; 
+        attackerDiceCount = 1;
     } else { // melee
-        attackerDiceCount = (attackerModel.type === 'large' ? 3 : 2); 
+        attackerDiceCount = (attackerModel.type === 'large' ? 3 : 2);
     }
 
     // Defender Dice
-    targetDiceCount = 1; 
-    if (attackType === 'melee') { 
-        targetDiceCount = (targetModel.type === 'large' ? 3 : 2); 
-    } 
+    targetDiceCount = 1;
+    if (attackType === 'melee') {
+        targetDiceCount = (targetModel.type === 'large' ? 3 : 2);
+    }
 
     // Adjust Ranks for rolls based on rules
     let effectiveAttackerRank = attackerModel.rank;
-    let effectiveTargetRank = targetModel.rank; 
+    let effectiveTargetRank = targetModel.rank;
 
     if (attackType === 'melee') {
-        if (attackerModel.type === 'large') effectiveAttackerRank += 2; 
-        if (targetModel.type === 'large') effectiveTargetRank += 2; 
+        if (attackerModel.type === 'large') effectiveAttackerRank += 2;
+        if (targetModel.type === 'large') effectiveTargetRank += 2;
     }
     if (isStationaryAttack) {
         effectiveAttackerRank += 2; // Stationary Attack Bonus is +2
     }
     // Ranged Cover Bonus
-    if (attackType === 'ranged' && isTargetInCover) { 
-        effectiveTargetRank += 3; 
+    if (attackType === 'ranged' && isTargetInCover) {
+        effectiveTargetRank += 3;
     }
 
     // Cap effective ranks at 20
     effectiveAttackerRank = Math.min(20, effectiveAttackerRank);
-    effectiveTargetRank = Math.min(20, effectiveTargetRank); 
+    effectiveTargetRank = Math.min(20, effectiveTargetRank);
 
     // Roll dice
     const attackerRolls = Array.from({ length: attackerDiceCount }, () => rollD20());
-    const targetRolls = Array.from({ length: targetDiceCount }, () => rollD20()); 
+    const targetRolls = Array.from({ length: targetDiceCount }, () => rollD20());
 
     combatLog += `${attackerModel.name} (Eff. Rank ${effectiveAttackerRank}) rolls: ${attackerRolls.join(', ')}\n`;
-    combatLog += `${targetModel.name} (Eff. Rank ${effectiveTargetRank}) rolls: ${targetRolls.join(', ')}\n`; 
+    combatLog += `${targetModel.name} (Eff. Rank ${effectiveTargetRank}) rolls: ${targetRolls.join(', ')}\n`;
 
     // Process rolls for successes and crits
     const processRollsResults = (rolls, rank) => {
@@ -292,42 +292,42 @@ function resolveCombat() {
     };
 
     const attackerResults = processRollsResults(attackerRolls, effectiveAttackerRank);
-    const targetResults = processRollsResults(targetRolls, effectiveTargetRank); 
+    const targetResults = processRollsResults(targetRolls, effectiveTargetRank);
 
-    let damageToTarget = 0; 
+    let damageToTarget = 0;
     let damageToAttacker = 0;
     let outcomeMessage = "";
 
     // --- Combat Resolution Logic (Based on Rulebook) ---
 
     // 1. Compare Critical Hits
-    if (attackerResults.crits.length > 0 && targetResults.crits.length === 0) { 
+    if (attackerResults.crits.length > 0 && targetResults.crits.length === 0) {
         // Attacker Crit (and Defender is NOT Crit)
-        damageToTarget = attackerResults.crits.length * 6; 
-        outcomeMessage = `${attackerModel.name} scores a CRITICAL HIT! ${targetModel.name} takes ${damageToTarget} damage.`; 
-    } else if (targetResults.crits.length > 0 && attackerResults.crits.length === 0) { 
+        damageToTarget = attackerResults.crits.length * 6;
+        outcomeMessage = `${attackerModel.name} scores a CRITICAL HIT! ${targetModel.name} takes ${damageToTarget} damage.`;
+    } else if (targetResults.crits.length > 0 && attackerResults.crits.length === 0) {
         // Defender Crit (and Attacker is NOT Crit)
-        outcomeMessage = `${targetModel.name} scores a CRITICAL DEFENSE! Attack is completely negated.`; 
-    } else if (attackerResults.crits.length > 0 && targetResults.crits.length > 0) { 
+        outcomeMessage = `${targetModel.name} scores a CRITICAL DEFENSE! Attack is completely negated.`;
+    } else if (attackerResults.crits.length > 0 && targetResults.crits.length > 0) {
         // Both Critical Hit: Defender's Crit wins
-        outcomeMessage = `Both critical! ${targetModel.name}'s critical defense wins. Attack is negated.`; 
+        outcomeMessage = `Both critical! ${targetModel.name}'s critical defense wins. Attack is negated.`;
     } else {
         // 2. If NO Critical Hits from either side, compare Non-Crit Successes
-        if (attackerResults.successes.length > 0 && targetResults.successes.length === 0) { 
+        if (attackerResults.successes.length > 0 && targetResults.successes.length === 0) {
             // Attacker Success, Defender Failure
-            damageToTarget = attackerResults.successes.length * 3; 
-            outcomeMessage = `${attackerModel.name} hits ${targetModel.name} for ${damageToTarget} damage.`; 
-        } else if (attackerResults.successes.length === 0 && targetResults.successes.length > 0) { 
+            damageToTarget = attackerResults.successes.length * 3;
+            outcomeMessage = `${attackerModel.name} hits ${targetModel.name} for ${damageToTarget} damage.`;
+        } else if (attackerResults.successes.length === 0 && targetResults.successes.length > 0) {
             // Attacker Failure, Defender Success -> Attacker takes 3 damage
-            damageToAttacker = 3; 
-            outcomeMessage = `${attackerModel.name} misses, but ${targetModel.name} successfully defends and counters! ${targetModel.name} takes 3 damage.`; 
-        } else if (attackerResults.successes.length > 0 && targetResults.successes.length > 0) { 
+            damageToAttacker = 3;
+            outcomeMessage = `${attackerModel.name} misses, but ${targetModel.name} successfully defends and counters! ${targetModel.name} takes 3 damage.`;
+        } else if (attackerResults.successes.length > 0 && targetResults.successes.length > 0) {
             // Both Success (Non-Critical) - Higher roll wins
-            if (attackerResults.highestSuccess > targetResults.highestSuccess) { 
-                damageToTarget = attackerResults.successes.length * 3; 
-                outcomeMessage = `${attackerModel.name}'s higher roll hits ${targetModel.name} for ${damageToTarget} damage.`; 
+            if (attackerResults.highestSuccess > targetResults.highestSuccess) {
+                damageToTarget = attackerResults.successes.length * 3;
+                outcomeMessage = `${attackerModel.name}'s higher roll hits ${targetModel.name} for ${damageToTarget} damage.`;
             } else { // Defender's roll is higher or tied
-                outcomeMessage = `${targetModel.name}'s defense holds. Attack is negated.`; 
+                outcomeMessage = `${targetModel.name}'s defense holds. Attack is negated.`;
             }
         } else {
             // Both Failure
@@ -353,33 +353,33 @@ function resolveCombat() {
         }
     }
 
-    alert(combatLog + "\n" + outcomeMessage); 
+    alert(combatLog + "\n" + outcomeMessage);
 
     // Clear active attacker/target after combat
     game.activeAttacker = null;
     game.activeTarget = null;
 
     // Update UI for both players after combat
-    updateUI(); 
+    updateUI();
 }
 
 function resetGame() {
     game = {
         currentTurn: 1,
-        maxTurns: parseInt(maxTurnsInput.value), 
+        maxTurns: parseInt(maxTurnsInput.value),
         pointLimit: parseInt(pointLimitInput.value),
         players: {
             1: {
-                name: player1NameInput.value, 
-                orders: [], 
+                name: player1NameInput.value,
+                orders: [],
                 squad: [],
                 lieutenantId: null,
                 totalRank: 0,
                 pointsSpent: 0
             },
             2: {
-                name: player2NameInput.value, 
-                orders: [], 
+                name: player2NameInput.value,
+                orders: [],
                 squad: [],
                 lieutenantId: null,
                 totalRank: 0,
@@ -390,9 +390,11 @@ function resetGame() {
         activeAttacker: null,
         activeTarget: null
     };
-    calculateOrders(1); 
-    calculateOrders(2); 
-    updateUI(); 
+    // Reset the global usedNames array when the game resets
+    usedNames = [];
+    calculateOrders(1);
+    calculateOrders(2);
+    updateUI();
 }
 
 // --- Utility Function ---
@@ -400,82 +402,42 @@ function rollD20() {
     return Math.floor(Math.random() * 20) + 1;
 }
 
-// --- Random Name Generator ---
-const BRUTISH_NAMES = [
-    "Fat Freddy", "Big Bertha", "Muscle Mike", "Broad Brad", "Tall Tim", "Heavy Henry", "Giant Jeff",
-    "Bully Bob", "Tankard Tim", "Iron Ike", "Slammin' Sam", "Bruiser Bruce", "Grizzly Gus", "Lumbering Lou", "Boulder Ben", "Thumper Tom", "The Wall Wally", "King Kong Karl", "Hulk Hogan", "Mighty Max", "Goliath Greg"
-];
-const SCRAPPY_NAMES = [
-    "Sneaky Sam", "Nimble Nick", "Dodgy Derek", "Quick Kyle", "Shady Sammy",
-    "Whiskey Wally", "Darting Dave", "Jittery Jim", "Flicker Finn", "Spry Spike",
-    "Tiny Tim", "Zippy Zach", "Blinky Ben", "Chip Charlie", "Pocket Paul", "Wriggly Ron", "Pint-Sized Pete", "Slippery Sid", "Mickey Mouse", "Speedy Steve"
-];
-
-// Array to keep track of used names to prevent duplicates
-let usedNames = [];
-
-function getRandomName(type) {
-    let namesList;
-    if (type === 'large') {
-        namesList = BRUTISH_NAMES;
-    } else { // small
-        namesList = SCRAPPY_NAMES;
-    }
-
-    // Filter out names already used
-    let availableNames = namesList.filter(name => !usedNames.includes(name));
-
-    // If all names are used, reset the usedNames array (or handle as an error)
-    if (availableNames.length === 0) {
-        usedNames = []; // Reset for a new cycle
-        availableNames = namesList; // All names are now available again
-        console.warn("All unique names used. Resetting name pool.");
-    }
-
-    const randomIndex = Math.floor(Math.random() * availableNames.length);
-    const selectedName = availableNames[randomIndex];
-    
-    usedNames.push(selectedName); // Add the selected name to the used list
-    return selectedName;
-}
-// --- End Random Name Generator ---
-
 // --- Event Listeners ---
 
 // Player Name Inputs
 player1NameInput.addEventListener('change', (e) => {
     game.players[1].name = e.target.value;
-    updateCombatSetupDisplay(); 
+    updateCombatSetupDisplay();
 });
 player2NameInput.addEventListener('change', (e) => {
     game.players[2].name = e.target.value;
-    updateCombatSetupDisplay(); 
+    updateCombatSetupDisplay();
 });
 
 // Max Turns Input Listener
 maxTurnsInput.addEventListener('change', () => {
     let newMaxTurns = parseInt(maxTurnsInput.value);
     if (isNaN(newMaxTurns) || newMaxTurns < 1) newMaxTurns = 1;
-    if (newMaxTurns > 10) newMaxTurns = 10; 
-    maxTurnsInput.value = newMaxTurns; 
+    if (newMaxTurns > 10) newMaxTurns = 10;
+    maxTurnsInput.value = newMaxTurns;
     game.maxTurns = newMaxTurns;
-    
+
     if (game.currentTurn > game.maxTurns) {
         game.currentTurn = 1;
-        calculateOrders(1); 
-        calculateOrders(2); 
+        calculateOrders(1);
+        calculateOrders(2);
     }
-    updateUI(); 
+    updateUI();
 });
 
 nextTurnBtn.addEventListener('click', () => {
-    if (game.currentTurn < game.maxTurns) { 
+    if (game.currentTurn < game.maxTurns) {
         game.currentTurn++;
-        calculateOrders(1); 
-        calculateOrders(2); 
+        calculateOrders(1);
+        calculateOrders(2);
         updateUI();
     } else {
-        alert(`Game over! Max ${game.maxTurns} turns reached.`); 
+        alert(`Game over! Max ${game.maxTurns} turns reached.`);
     }
 });
 
@@ -491,7 +453,7 @@ pointLimitInput.addEventListener('change', () => {
     if (newLimit > 10) newLimit = 10;
     pointLimitInput.value = newLimit;
     game.pointLimit = newLimit;
-    
+
     if (game.players[1].pointsSpent > game.pointLimit || game.players[2].pointsSpent > game.pointLimit) {
         alert("Warning: One or both players' squads currently exceed the new point limit. Consider resetting the game or removing models.");
     }
@@ -506,7 +468,7 @@ document.querySelectorAll('.player-orders').forEach(container => {
             const orderIndex = parseInt(target.dataset.orderIndex);
             const playerId = parseInt(target.dataset.playerId);
             game.players[playerId].orders[orderIndex] = !game.players[playerId].orders[orderIndex];
-            updatePlayerSpecificUI(playerId); 
+            updatePlayerSpecificUI(playerId);
         }
     });
 });
@@ -514,8 +476,8 @@ document.querySelectorAll('.player-orders').forEach(container => {
 // Add Model buttons (attached directly for robustness)
 document.querySelectorAll('.add-model-btn').forEach(button => {
     button.addEventListener('click', (e) => {
-        const playerId = parseInt(e.target.dataset.player); 
-        const type = e.target.dataset.type; 
+        const playerId = parseInt(e.target.dataset.player);
+        const type = e.target.dataset.type;
         const cost = MODEL_COSTS[type];
 
         if (game.players[playerId].pointsSpent + cost > game.pointLimit) {
@@ -523,18 +485,20 @@ document.querySelectorAll('.add-model-btn').forEach(button => {
             return;
         }
 
+        const newName = getRandomName(type); // Get the name first
         const newModel = {
             id: game.nextModelId++,
             type: type,
-            name: getRandomName(type), 
-            rank: 10, 
+            name: newName, // Assign the generated name
+            rank: 10,
             hitsTaken: 0,
             rankRollsUsed: 0,
-            isKO: false
+            isKO: false,
+            mugshot: getMugshotPath(newName) // Use the name to get the mugshot path
         };
         game.players[playerId].squad.push(newModel);
-        calculateOrders(playerId); 
-        updatePlayerSpecificUI(playerId); 
+        calculateOrders(playerId);
+        updatePlayerSpecificUI(playerId);
     });
 });
 
@@ -554,26 +518,26 @@ rollDiceButtons.forEach(button => {
 document.querySelectorAll('.player-panel').forEach(panel => {
     panel.addEventListener('click', (e) => {
         const target = e.target;
-        const modelCard = target.closest('.model-card'); 
-        const playerId = parseInt(panel.dataset.playerId); 
-        
+        const modelCard = target.closest('.model-card');
+        const playerId = parseInt(panel.dataset.playerId);
+
         // Handle player name input separately
         const playerNameInputElem = playerId === 1 ? player1NameInput : player2NameInput;
         if (target === playerNameInputElem) {
             // This is handled by specific playerNameInput listeners
-            return; 
+            return;
         }
 
         // If click is not on a model card control, exit
         if (!modelCard) {
-            return; 
+            return;
         }
 
         const modelId = parseInt(modelCard.dataset.modelId);
-        const player = game.players[playerId]; 
+        const player = game.players[playerId];
         const model = player.squad.find(m => m.id === modelId);
 
-        if (!model) return; 
+        if (!model) return;
 
         if (target.classList.contains('remove-model-btn')) {
             if (model.id === player.lieutenantId && !confirm("This is your BB. Are you sure you want to remove them?")) {
@@ -583,28 +547,28 @@ document.querySelectorAll('.player-panel').forEach(panel => {
             if (player.lieutenantId === modelId) {
                 player.lieutenantId = null;
             }
-            calculateOrders(playerId); 
+            calculateOrders(playerId);
         } else if (target.classList.contains('lieutenant-toggle')) {
-            if (model.id === player.lieutenantId) { // Check against model.id directly
+            if (model.id === player.lieutenantId) {
                 player.lieutenantId = null;
             } else {
                 if (player.lieutenantId !== null) {
                     alert("You can only have one BB at a time. Please unassign the current BB first.");
                     return;
                 }
-                player.lieutenantId = model.id; // Set using model.id
+                player.lieutenantId = model.id;
             }
-            calculateOrders(playerId); 
+            calculateOrders(playerId);
         } else if (target.classList.contains('ko-toggle')) {
             model.isKO = !model.isKO;
-            calculateOrders(playerId); 
+            calculateOrders(playerId);
         } else if (target.classList.contains('apply-damage-btn')) {
             const damageAmount = parseInt(target.dataset.damage);
-            model.rank = Math.min(20, Math.max(0, model.rank + damageAmount)); 
-            model.hitsTaken++; 
+            model.rank = Math.min(20, Math.max(0, model.rank + damageAmount));
+            model.hitsTaken++;
 
             if (model.rank <= 0) {
-                model.isKO = true; 
+                model.isKO = true;
             }
         } else if (target.classList.contains('roll-rank-btn')) {
             if (model.rankRollsUsed >= MAX_RANK_ROLLS) {
@@ -612,47 +576,47 @@ document.querySelectorAll('.player-panel').forEach(panel => {
                 return;
             }
             const rolledRank = rollD20();
-            model.rank = rolledRank; 
-            model.rankRollsUsed++; 
+            model.rank = rolledRank;
+            model.rankRollsUsed++;
             modelCard.querySelector('.rank-input').value = rolledRank;
             modelCard.querySelector('.model-rank-display').textContent = rolledRank;
             modelCard.querySelector('.rank-rolls-display').textContent = `(Rolls: ${model.rankRollsUsed}/${MAX_RANK_ROLLS})`;
             if (model.rankRollsUsed >= MAX_RANK_ROLLS) {
                 target.disabled = true;
             }
-            calculateTotalRank(playerId); 
+            calculateTotalRank(playerId);
             const totalRankSpan = playerId === 1 ? player1TotalRankSpan : player2TotalRankSpan;
-            totalRankSpan.textContent = player.totalRank; 
-            return; 
+            totalRankSpan.textContent = player.totalRank;
+            return;
         } else if (target.classList.contains('set-attacker-btn')) {
             game.activeAttacker = { playerId: playerId, modelId: model.id };
-        } else if (target.classList.contains('set-target-btn')) { // Corrected to set-defender-btn
+        } else if (target.classList.contains('set-target-btn')) {
             game.activeTarget = { playerId: playerId, modelId: model.id };
         }
-        updatePlayerSpecificUI(playerId); 
-        updateCombatSetupDisplay(); 
+        updatePlayerSpecificUI(playerId);
+        updateCombatSetupDisplay();
     });
 
     panel.addEventListener('change', (e) => {
         const target = e.target;
         if (target.classList.contains('rank-input')) {
             const modelCard = target.closest('.model-card');
-            if (!modelCard) return; 
+            if (!modelCard) return;
 
-            const playerId = parseInt(panel.dataset.playerId); 
+            const playerId = parseInt(panel.dataset.playerId);
             const modelId = parseInt(modelCard.dataset.modelId);
-            const player = game.players[playerId]; 
+            const player = game.players[playerId];
             const model = player.squad.find(m => m.id === modelId);
 
             if (model) {
                 let newRank = parseInt(target.value);
                 if (isNaN(newRank) || newRank < 0) newRank = 0;
                 if (newRank > 20) newRank = 20;
-                
+
                 model.rank = newRank;
                 target.closest('.model-card').querySelector('.model-rank-display').textContent = newRank;
-                calculateTotalRank(playerId); 
-                
+                calculateTotalRank(playerId);
+
                 const totalRankSpan = playerId === 1 ? player1TotalRankSpan : player2TotalRankSpan;
                 totalRankSpan.textContent = player.totalRank;
             }
@@ -661,13 +625,13 @@ document.querySelectorAll('.player-panel').forEach(panel => {
 });
 
 // Resolve Combat Button Listener
-resolveCombatBtn.addEventListener('click', resolveCombat); 
+resolveCombatBtn.addEventListener('click', resolveCombat);
 
 // Initial setup when the page loads
-resetGame(); 
+resetGame();
 });
 
-// --- Random Name Generator ---
+// --- Random Name Generator (GLOBAL) ---
 const BRUTISH_NAMES = [
 "Fat Freddy", "Big Bertha", "Muscle Mike", "Broad Brad", "Tall Tim", "Heavy Henry", "Giant Jeff",
 "Bully Bob", "Tankard Tim", "Iron Ike", "Slammin' Sam", "Bruiser Bruce", "Grizzly Gus", "Lumbering Lou", "Boulder Ben", "Thumper Tom", "The Wall Wally", "King Kong Karl", "Hulk Hogan", "Mighty Max", "Goliath Greg"
@@ -678,7 +642,7 @@ const SCRAPPY_NAMES = [
 "Tiny Tim", "Zippy Zach", "Blinky Ben", "Chip Charlie", "Pocket Paul", "Wriggly Ron", "Pint-Sized Pete", "Slippery Sid", "Mickey Mouse", "Speedy Steve"
 ];
 
-// Array to keep track of used names to prevent duplicates
+// Array to keep track of used names to prevent duplicates across models
 let usedNames = [];
 
 function getRandomName(type) {
@@ -692,11 +656,11 @@ if (type === 'large') {
 // Filter out names already used
 let availableNames = namesList.filter(name => !usedNames.includes(name));
 
-// If all names are used, reset the usedNames array (or handle as an error)
+// If all names are used, reset the usedNames array (and warn)
 if (availableNames.length === 0) {
     usedNames = []; // Reset for a new cycle
     availableNames = namesList; // All names are now available again
-    console.warn("All unique names used. Resetting name pool.");
+    console.warn("All unique names used. Resetting name pool for character names.");
 }
 
 const randomIndex = Math.floor(Math.random() * availableNames.length);
@@ -705,6 +669,10 @@ const selectedName = availableNames[randomIndex];
 usedNames.push(selectedName); // Add the selected name to the used list
 return selectedName;
 }
-// --- End Random Name Generator ---
 
-
+// --- Mugshot Path Generator (GLOBAL) ---
+function getMugshotPath(characterName) {
+// Convert "Fat Freddy" to "fat_freddy.png"
+const filename = characterName.toLowerCase().replace(/\s/g, '_') + '.png';
+return `./Users/dylan.rohleder/Library/CloudStorage/OneDrive-Ogilvy/Desktop/TavernBrawlApp/images/mugshots${filename}`;
+}
