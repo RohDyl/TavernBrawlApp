@@ -10,93 +10,93 @@
 </head>
 <body>
 <div class="container">
-    <h1>TAVERN BRAWL</h1>
+<h1>TAVERN BRAWL</h1>
 
-    <!-- Universal Dice Roller Section -->
-    <div class="dice-roller-section">
-        <div class="dice-buttons">
-            <button class="roll-dice-btn" data-num-dice="1">Roll 1d20</button>
-            <button class="roll-dice-btn" data-num-dice="2">Roll 2d20</button>
-            <button class="roll-dice-btn" data-num-dice="3">Roll 3d20</button>
-        </div>
-        <div class="dice-results">
-            Results: <span id="diceResultsDisplay"></span>
-        </div>
+<!-- Universal Dice Roller Section -->
+<div class="dice-roller-section">
+    <div class="dice-buttons">
+        <button class="roll-dice-btn" data-num-dice="1">Roll 1d20</button>
+        <button class="roll-dice-btn" data-num-dice="2">Roll 2d20</button>
+        <button class="roll-dice-btn" data-num-dice="3">Roll 3d20</button>
     </div>
-    <!-- End Universal Dice Roller Section -->
+    <div class="dice-results">
+        Results: <span id="diceResultsDisplay"></span>
+    </div>
+</div>
+<!-- End Universal Dice Roller Section -->
 
-    <div class="game-controls">
-        <div class="turn-tracker">
-            Turn: <span id="currentTurn">1</span> / <span id="maxTurnsDisplay">3</span>
-            <button id="nextTurnBtn">Next Turn</button>
+<div class="game-controls">
+    <div class="turn-tracker">
+        Turn: <span id="currentTurn">1</span> / <span id="maxTurnsDisplay">3</span>
+        <button id="nextTurnBtn">Next Turn</button>
+    </div>
+    <div class="max-turns-control">
+        Max Turns: <input type="number" id="maxTurnsInput" value="3" min="1" max="10">
+    </div>
+    <div class="point-limit-control">
+        Point Limit: <input type="number" id="pointLimitInput" value="4" min="1" max="10">
+    </div>
+    <button id="resetGameBtn">Reset Game</button>
+</div>
+
+<!-- Combat Control Panel -->
+<div class="combat-control-panel">
+    <h3>Combat Setup</h3>
+    <div class="combat-selection">
+        Attacker: <span id="activeAttackerDisplay">None</span>
+        Defender: <span id="activeTargetDisplay">None</span>
+    </div>
+    <div class="combat-options">
+        <label>
+            <input type="checkbox" id="targetInCover"> Defender in Cover
+        </label>
+        <label>
+            Attack Type:
+            <select id="attackType">
+                <option value="ranged">Ranged</option>
+                <option value="melee">Melee</option>
+            </select>
+        </label>
+        <label>
+            <input type="checkbox" id="isStationaryAttack"> Stationary Attack
+        </label>
+    </div>
+    <button id="resolveCombatBtn">Resolve Combat</button>
+</div>
+
+<div class="players-container"> <!-- Container for both player panels -->
+    <!-- Player 1 Panel -->
+    <div class="player-panel" id="player1Panel" data-player-id="1">
+        <h2>Player 1</h2>
+        <input type="text" class="player-name-input" id="player1NameInput" value="Player 1">
+        <div class="player-orders">
+            <div id="player1OrderTokensContainer"></div>
         </div>
-        <div class="max-turns-control">
-            Max Turns: <input type="number" id="maxTurnsInput" value="3" min="1" max="10">
+        <div class="squad-controls">
+            <button class="add-model-btn" data-player="1" data-type="small">Add Scrapper (1pt)</button>
+            <button class="add-model-btn" data-player="1" data-type="large">Add Brute (2pt)</button>
+            <div class="points-spent-display">Points: <span id="player1PointsSpent">0</span> / <span class="player-point-limit" data-player="1">4</span></div>
+            <div class="total-rank-display">Total Rank: <span id="player1TotalRank">0</span></div>
         </div>
-        <div class="point-limit-control">
-            Point Limit: <input type="number" id="pointLimitInput" value="4" min="1" max="10">
-        </div>
-        <button id="resetGameBtn">Reset Game</button>
+        <div class="squad-list" id="player1Squad"></div>
     </div>
 
-    <!-- Combat Control Panel -->
-    <div class="combat-control-panel">
-        <h3>Combat Setup</h3>
-        <div class="combat-selection">
-            Attacker: <span id="activeAttackerDisplay">None</span>
-            Defender: <span id="activeTargetDisplay">None</span>
+    <!-- Player 2 Panel -->
+    <div class="player-panel" id="player2Panel" data-player-id="2">
+        <h2>Player 2</h2>
+        <input type="text" class="player-name-input" id="player2NameInput" value="Player 2">
+        <div class="player-orders">
+            <div id="player2OrderTokensContainer"></div>
         </div>
-        <div class="combat-options">
-            <label>
-                <input type="checkbox" id="targetInCover"> Defender in Cover
-            </label>
-            <label>
-                Attack Type:
-                <select id="attackType">
-                    <option value="ranged">Ranged</option>
-                    <option value="melee">Melee</option>
-                </select>
-            </label>
-            <label>
-                <input type="checkbox" id="isStationaryAttack"> Stationary Attack
-            </label>
+        <div class="squad-controls">
+            <button class="add-model-btn" data-player="2" data-type="small">Add Scrapper (1pt)</button>
+            <button class="add-model-btn" data-player="2" data-type="large">Add Brute (2pt)</button>
+            <div class="points-spent-display">Points: <span id="player2PointsSpent">0</span> / <span class="player-point-limit" data-player="2">4</span></div>
+            <div class="total-rank-display">Total Rank: <span id="player2TotalRank">0</span></div>
         </div>
-        <button id="resolveCombatBtn">Resolve Combat</button>
+        <div class="squad-list" id="player2Squad"></div>
     </div>
-
-    <div class="players-container"> <!-- Container for both player panels -->
-        <!-- Player 1 Panel -->
-        <div class="player-panel" id="player1Panel" data-player-id="1">
-            <h2>Player 1</h2>
-            <input type="text" class="player-name-input" id="player1NameInput" value="Player 1">
-            <div class="player-orders">
-                <div id="player1OrderTokensContainer"></div>
-            </div>
-            <div class="squad-controls">
-                <button class="add-model-btn" data-player="1" data-type="small">Add Scrapper (1pt)</button>
-                <button class="add-model-btn" data-player="1" data-type="large">Add Brute (2pt)</button>
-                <div class="points-spent-display">Points: <span id="player1PointsSpent">0</span> / <span class="player-point-limit" data-player="1">4</span></div>
-                <div class="total-rank-display">Total Rank: <span id="player1TotalRank">0</span></div>
-            </div>
-            <div class="squad-list" id="player1Squad"></div>
-        </div>
-
-        <!-- Player 2 Panel -->
-        <div class="player-panel" id="player2Panel" data-player-id="2">
-            <h2>Player 2</h2>
-            <input type="text" class="player-name-input" id="player2NameInput" value="Player 2">
-            <div class="player-orders">
-                <div id="player2OrderTokensContainer"></div>
-            </div>
-            <div class="squad-controls">
-                <button class="add-model-btn" data-player="2" data-type="small">Add Scrapper (1pt)</button>
-                <button class="add-model-btn" data-player="2" data-type="large">Add Brute (2pt)</button>
-                <div class="points-spent-display">Points: <span id="player2PointsSpent">0</span> / <span class="player-point-limit" data-player="2">4</span></div>
-                <div class="total-rank-display">Total Rank: <span id="player2TotalRank">0</span></div>
-            </div>
-            <div class="squad-list" id="player2Squad"></div>
-        </div>
-    </div>
+</div>
 </div>
 
 <script src="script.js"></script>

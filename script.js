@@ -100,7 +100,18 @@ function updatePlayerSpecificUI(playerId) {
         const orderToken = document.createElement('button');
         orderToken.className = `order-token ${isUsed ? 'used' : 'available'}`;
         orderToken.dataset.orderIndex = index;
-        orderToken.dataset.playerId = playerId; // Add player ID to order token
+        orderToken.dataset.playerId = playerId;
+
+        // Set background image based on status
+        if (isUsed) {
+            orderToken.style.backgroundImage = 'url("./images/pow_red.png")'; // Path to your 'Pow' image
+        } else {
+            orderToken.style.backgroundImage = 'url("./images/bang_round.png")'; // Path to your 'Bang' image
+        }
+        orderToken.style.backgroundSize = 'cover'; // Ensure image covers the button
+        orderToken.style.backgroundPosition = 'center'; // Center the image
+        orderToken.style.backgroundRepeat = 'no-repeat'; // Prevent repeating
+
         orderTokensContainer.appendChild(orderToken);
     });
     // --- End Order Token Rendering ---
@@ -680,7 +691,7 @@ const filename = characterName.toLowerCase().replace(/\s/g, '_') + '.png';
 // └── images/
 //     └── mugshots/
 //         └── your_image.png
-return `./images/mugshots/${filename}`; // Changed to lowercase 'images' and 'mugshots'
+return `./images/mugshots/${filename}`;
 }
 
 
