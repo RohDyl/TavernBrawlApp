@@ -4,7 +4,7 @@ font-family: 'Roboto Mono', monospace, 'Courier New', Courier, sans-serif; /* Mo
 background-color: #3D2B1F; /* Dark wood brown for bar counter */
 
 /* Background image for wood texture - REPLACE WITH YOUR IMAGE PATH */
-background-image: url('./images/wood_texture.jpg'); 
+background-image: url('./images/wood_texture.jpg');
 background-repeat: repeat;
 background-size: 200px 200px; /* Adjust size to make it distressed */
 background-blend-mode: multiply; /* Blend with background-color for depth */
@@ -23,7 +23,7 @@ box-sizing: border-box;
 .container {
 background-color: #FDFCEE; /* Off-white/Creamy paper color */
 border-radius: 2px; /* Slight rounding for paper */
-padding: 25px 15px; /* Padding inside the receipt */
+padding: 25px 15px;
 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Lift off the counter */
 width: 100%;
 max-width: 800px; /* Wider for two columns */
@@ -32,12 +32,12 @@ position: relative; /* For tear effect and smudges */
 overflow: hidden; /* Hide overflow from tear effect */
 
 /* Subtle crinkle and smudge effect - REPLACE WITH YOUR IMAGE PATH */
-background-image: url('./images/paper_crinkle.png'); 
+background-image: url('./images/paper_crinkle.png');
 background-repeat: no-repeat; /* Do not repeat the main texture */
 background-size: cover; /* Scale to cover the container */
 background-position: center center; /* Center the image */
-opacity: 0.95; /* Make the paper slightly transparent to show background if needed */
-filter: brightness(1.02) contrast(1.02); /* Slightly enhance paper color */
+opacity: 1; /* Set to 1 for full brightness, as discussed */
+filter: brightness(1) contrast(1); /* No filter effect, as discussed */
 }
 
 /* --- Receipt Tear Effect (Top and Bottom) --- */
@@ -48,7 +48,7 @@ left: 0;
 width: 100%;
 height: 10px; /* Height of the tear */
 background: linear-gradient(-45deg, #FDFCEE 5px, transparent 0) 0 5px,
-        linear-gradient(45deg, #FDFCEE 5px, transparent 0) 0 5px;
+            linear-gradient(45deg, #FDFCEE 5px, transparent 0) 0 5px;
 background-size: 10px 10px;
 background-repeat: repeat-x;
 z-index: 1;
@@ -76,15 +76,118 @@ text-transform: uppercase;
 letter-spacing: 1px;
 }
 
-/* --- New Combat Control Panel --- */
-.combat-control-panel {
-background-color: #E8E8E8; /* Lighter background for contrast */
+/* --- NEW: Top Control Panel Styling --- */
+.top-control-panel {
+background-color: #E8E8E8; /* Lighter background for the panel itself */
 border: 1px solid #A0A0A0;
 border-radius: 5px;
-padding: 10px;
+padding: 15px;
 margin-bottom: 20px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+display: flex;
+flex-direction: column; /* Stack sections vertically by default */
+gap: 15px; /* Space between the internal sections */
+}
+
+/* --- Existing Sections within the Control Panel --- */
+.dice-roller-section {
 text-align: center;
-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+padding-bottom: 10px;
+border-bottom: 1px dashed #B0B0B0; /* Lighter dashed line for internal separation */
+}
+
+.dice-buttons {
+margin-bottom: 10px;
+}
+
+.dice-results {
+font-size: 1.1em;
+font-weight: bold;
+color: #333;
+}
+
+/* MODIFIED: General styling for dice roll buttons */
+.roll-dice-btn {
+background-color: transparent; /* Make background transparent to show image */
+border: none; /* Remove default button border */
+padding: 0; /* Remove padding so image fills button */
+width: 80px; /* Adjust width to fit your image size */
+height: 80px; /* Adjust height to fit your image size */
+display: inline-flex; /* Use flex to center text/image if needed */
+justify-content: center;
+align-items: center;
+font-size: 0; /* Hide the "Roll 1d20" text, as image will convey it */
+cursor: pointer;
+transition: transform 0.1s ease, filter 0.2s ease; /* Transition for hover/active effects */
+background-size: contain; /* Ensure image fits within button bounds */
+background-repeat: no-repeat;
+background-position: center;
+box-shadow: none; /* Remove default button shadow */
+}
+
+.roll-dice-btn:hover {
+transform: scale(1.05); /* Slight scale on hover */
+filter: brightness(1.1); /* Slightly brighten image on hover */
+}
+
+.roll-dice-btn:active {
+transform: scale(0.95); /* Press down effect on click */
+filter: brightness(0.9); /* Slightly darken image on click */
+}
+
+/* NEW: Specific background images for each dice button */
+.dice-1d20 {
+background-image: url('./images/dice_button_1d20.png'); /* Adjust filename if different */
+}
+
+.dice-2d20 {
+background-image: url('./images/dice_button_2d20.png'); /* Adjust filename if different */
+}
+
+.dice-3d20 {
+background-image: url('./images/dice_button_3d20.png'); /* Adjust filename if different */
+}
+
+.game-controls {
+display: flex;
+flex-wrap: wrap; /* Allow items to wrap */
+justify-content: center;
+align-items: center;
+gap: 10px;
+padding-bottom: 10px;
+border-bottom: 1px dashed #B0B0B0;
+}
+
+.turn-tracker, .point-limit-control, .max-turns-control {
+font-size: 0.9em;
+color: #1A1A1A;
+font-weight: normal;
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.turn-tracker #currentTurn, .max-turns-control #maxTurnsDisplay {
+font-weight: bold;
+color: #007bff;
+}
+
+#pointLimitInput, #maxTurnsInput {
+width: 40px;
+padding: 3px 5px;
+font-size: 0.8em;
+background-color: #FDFCEE;
+border: 1px solid #A0A0A0;
+color: #1A1A1A;
+}
+
+/* --- Combat Control Panel (already existed, just ensure it fits) --- */
+.combat-control-panel {
+background-color: transparent;
+border: none;
+box-shadow: none;
+padding: 0;
+margin-bottom: 0;
 }
 
 .combat-control-panel h3 {
@@ -100,9 +203,15 @@ margin-bottom: 10px;
 color: #1A1A1A;
 }
 
-.combat-selection span {
+/* Attacker and Defender text colors in Combat Setup */
+.combat-selection .attacker-name {
 font-weight: bold;
-color: #00BFFF; /* Electric Blue for selected names */
+color: #DC3545; /* Red for Attacker */
+}
+
+.combat-selection .defender-name {
+font-weight: bold;
+color: #007BFF; /* Blue for Defender */
 }
 
 .combat-options {
@@ -130,7 +239,7 @@ font-size: 0.9em;
 }
 
 #resolveCombatBtn {
-background-color: #FF8C00; /* Vibrant Orange for action */
+background-color: #FF8C00;
 color: #1A1A1A;
 font-weight: bold;
 box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
@@ -141,6 +250,7 @@ box-shadow: 0 0 10px rgba(255, 140, 0, 0.8);
 }
 
 /* --- General Button Styling (Stamping Effect) --- */
+/* Ensure this general button style comes AFTER .roll-dice-btn so it doesn't override */
 button {
 background-color: #D0D0D0;
 color: #1A1A1A;
@@ -171,66 +281,30 @@ box-shadow: none;
 opacity: 0.7;
 }
 
-/* --- Specific Section Styles --- */
-.dice-roller-section, .game-controls {
+/* --- Player Panels (Two Column Layout) --- */
+.players-container {
+display: flex;
+gap: 20px;
+flex-wrap: wrap;
+justify-content: center;
+}
+
+.player-panel {
 background-color: transparent;
 box-shadow: none;
 padding: 0;
 margin-bottom: 15px;
 border-radius: 0;
-}
-
-.game-controls {
-border-bottom: 1px dashed #606060;
-padding-bottom: 15px;
-justify-content: space-around;
-}
-
-.turn-tracker, .point-limit-control, .overall-total-rank, .max-turns-control {
-font-size: 0.9em;
-color: #1A1A1A;
-font-weight: normal;
-}
-
-.turn-tracker #currentTurn, .overall-total-rank span {
-color: #1A1A1A;
-font-weight: bold;
-text-shadow: none;
-}
-
-#pointLimitInput, #maxTurnsInput {
-width: 40px;
-padding: 3px 5px;
-font-size: 0.8em;
-background-color: #E8E8E8;
-border: 1px solid #A0A0A0;
-color: #1A1A1A;
-}
-
-/* --- Player Panels (Two Column Layout) --- */
-.players-container {
-display: flex;
-gap: 20px; /* Space between player panels */
-flex-wrap: wrap; /* Allow wrapping on smaller screens */
-justify-content: center;
-}
-
-.player-panel {
-background-color: transparent; /* Make transparent on receipt */
-box-shadow: none;
-padding: 0;
-margin-bottom: 15px;
-border-radius: 0;
-flex: 1; /* Distribute space */
-min-width: 300px; /* Minimum width before wrapping */
+flex: 1;
+min-width: 300px;
 }
 
 .player-panel h2 {
-color: #1A1A1A; /* Dark text */
+color: #1A1A1A;
 text-align: center;
 margin-top: 0;
 margin-bottom: 15px;
-font-size: 1.2em; /* Smaller for player names */
+font-size: 1.2em;
 text-shadow: none;
 border-bottom: 1px dashed #606060;
 padding-bottom: 5px;
@@ -267,7 +341,7 @@ align-items: center;
 gap: 8px;
 }
 
-#player1OrderTokensContainer, #player2OrderTokensContainer { /* Specific IDs for each player */
+#player1OrderTokensContainer, #player2OrderTokensContainer {
 display: flex;
 flex-wrap: wrap;
 justify-content: center;
@@ -276,54 +350,54 @@ margin-top: 8px;
 }
 
 .order-token {
-width: 35px; /* Size of the token */
+width: 35px;
 height: 35px;
-border-radius: 50%; /* Make it round */
+border-radius: 50%;
 display: flex;
 justify-content: center;
 align-items: center;
 font-size: 1.1em;
 font-weight: bold;
 cursor: pointer;
-transition: transform 0.1s ease, box-shadow 0.2s ease; /* Removed background-color from transition */
+transition: transform 0.1s ease, box-shadow 0.2s ease;
 box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-border: 1px solid #606060; /* Border for definition */
+border: 1px solid #606060;
 position: relative;
-background-color: transparent; /* Ensure no default background color interferes */
-color: transparent; /* Hide the default text (like 'X' if not explicitly styled) */
-overflow: hidden; /* Ensure image doesn't spill out of round shape */
+background-color: transparent;
+color: transparent;
+overflow: hidden;
 }
 
 .order-token:hover {
-transform: scale(1.05); /* Slight hover effect */
+transform: scale(1.05);
 box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
 
 .order-token:active {
-transform: scale(0.95); /* Click effect */
+transform: scale(0.95);
 box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 }
 
 /* Remove specific background colors for available/used, as images will handle it */
 .order-token.available {
-/* background-color: #8BC34A; */ /* Removed */
-/* color: #1A1A1A; */ /* Removed */
-box-shadow: 0 0 8px rgba(139, 195, 74, 0.7); /* Keep shadow for available */
+/* background-color: #8BC34A; */
+/* color: #1A1A1A; */
+box-shadow: 0 0 8px rgba(139, 195, 74, 0.7);
 }
 
 .order-token.available:hover {
-/* background-color: #7CB342; */ /* Removed */
+/* background-color: #7CB342; */
 box-shadow: 0 0 12px rgba(139, 195, 74, 0.9);
 }
 
 .order-token.used {
-/* background-color: #F44336; */ /* Removed */
-/* color: #1A1A1A; */ /* Removed */
-box-shadow: 0 0 8px rgba(244, 67, 54, 0.7); /* Keep shadow for used */
+/* background-color: #F44336; */
+/* color: #1A1A1A; */
+box-shadow: 0 0 8px rgba(244, 67, 54, 0.7);
 }
 
 .order-token.used:hover {
-/* background-color: #D32F2F; */ /* Removed */
+/* background-color: #D32F2F; */
 box-shadow: 0 0 12px rgba(244, 67, 54, 0.9);
 }
 
@@ -331,9 +405,9 @@ box-shadow: 0 0 12px rgba(244, 67, 54, 0.9);
 content: 'X';
 position: absolute;
 font-size: 1.5em;
-color: #1A1A1A; /* Ensure the 'X' is visible over the image */
-text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5); /* Add a subtle shadow for better contrast */
-z-index: 2; /* Ensure 'X' is above the background image */
+color: #1A1A1A;
+text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+z-index: 2;
 }
 
 /* --- Squad Controls & Model Card Styles --- */
@@ -345,7 +419,7 @@ border-bottom: 1px dashed #606060;
 }
 
 .squad-controls button {
-background-color: #D0D0D0; /* Default button style */
+background-color: #D0D0D0;
 color: #1A1A1A;
 box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
@@ -356,19 +430,20 @@ box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
 }
 
 .points-spent-display, .total-rank-display {
-font-weight: normal; /* Less bold */
-color: #1A1A1A; /* Dark text */
+font-weight: normal;
+color: #1A1A1A;
 margin-top: 10px;
 font-size: 0.9em;
 }
 
 .points-spent-display span, .total-rank-display span {
-color: #1A1A1A; /* Dark text */
+color: #1A1A1A;
 font-weight: bold;
 }
 
+/* Reverted Model Card Layout */
 .model-card {
-background-color: #E8E8E8; /* Light background for model cards */
+background-color: #E8E8E8;
 border-radius: 3px;
 padding: 10px;
 margin-bottom: 10px;
@@ -387,8 +462,8 @@ background-color: #C0C0C0;
 }
 
 .model-info {
-display: flex; /* Use flexbox for model info */
-align-items: center; /* Align items vertically */
+display: flex;
+align-items: center;
 flex-grow: 1;
 min-width: 120px;
 font-size: 0.9em;
@@ -396,13 +471,13 @@ color: #1A1A1A;
 }
 
 .model-info .mugshot-img { /* Style for the mugshot image */
-width: 40px; /* Size of the mugshot */
-height: 40px;
-border-radius: 50%; /* Make it round */
-object-fit: cover; /* Ensure image covers the area */
-border: 2px solid #606060; /* Border around mugshot */
-margin-right: 8px; /* Space between image and text */
-flex-shrink: 0; /* Prevent image from shrinking */
+width: 50px; /* Slightly larger */
+height: 50px; /* Slightly larger */
+border-radius: 5px; /* Small square */
+object-fit: cover;
+border: 2px solid #606060;
+margin-right: 8px;
+flex-shrink: 0;
 }
 
 .model-info span {
@@ -416,6 +491,9 @@ flex-direction: row;
 align-items: center;
 gap: 5px;
 flex-wrap: wrap;
+/* NEW: Pushes combat buttons to the right */
+justify-content: space-between;
+width: 100%; /* Ensure it takes full width to justify content */
 }
 
 .model-controls .rank-input-group {
@@ -426,7 +504,7 @@ gap: 2px;
 }
 
 .model-controls button {
-background-color: #D0D0D0; /* Light grey for controls */
+background-color: #D0D0D0;
 color: #1A1A1A;
 box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 padding: 4px 8px;
@@ -449,15 +527,15 @@ font-size: 0.8em;
 
 /* BB Button Styling */
 .model-controls .lieutenant-toggle {
-background-color: #D0D0D0; /* Default light grey */
+background-color: #D0D0D0;
 color: #1A1A1A;
 text-shadow: none;
 box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .model-controls .lieutenant-toggle.is-lieutenant {
-background-color: #00BFFF; /* Electric Blue for BB */
-color: #F0F0F0; /* Light text for contrast */
+background-color: #00BFFF;
+color: #F0F0F0;
 text-shadow: 0 0 5px rgba(0, 191, 255, 0.7);
 box-shadow: 0 0 8px rgba(0, 191, 255, 0.8);
 }
@@ -469,13 +547,13 @@ box-shadow: 0 0 12px rgba(0, 191, 255, 0.9);
 
 /* KO Button Styling */
 .model-controls .ko-toggle {
-background-color: #D0D0D0; /* Default light grey */
+background-color: #D0D0D0;
 color: #1A1A1A;
 box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .model-controls .ko-toggle.is-ko {
-background-color: #F44336; /* Red for KO */
+background-color: #F44336;
 color: #F0F0F0;
 box-shadow: 0 0 8px rgba(244, 67, 54, 0.7);
 }
@@ -491,7 +569,7 @@ box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 /* Specific colors for -3 and -6 */
 .damage-buttons button[data-damage="-3"] {
-background-color: #FF8C00; /* Vibrant Orange for -3 */
+background-color: #FF8C00;
 color: #1A1A1A;
 }
 .damage-buttons button[data-damage="-3"]:hover {
@@ -499,7 +577,7 @@ background-color: #E07B00;
 box-shadow: 0 0 8px rgba(255, 140, 0, 0.7);
 }
 .damage-buttons button[data-damage="-6"] {
-background-color: #D32F2F; /* Darker Red for -6 */
+background-color: #D32F2F;
 color: #F0F0F0;
 box-shadow: 0 0 8px rgba(211, 47, 47, 0.7);
 }
@@ -516,7 +594,7 @@ margin-left: 8px;
 
 /* Style for Roll Rank button */
 .roll-rank-btn {
-background-color: #FFD700; /* Electric Yellow/Gold */
+background-color: #FFD700;
 color: #1A1A1A;
 box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 width: 45px;
@@ -528,62 +606,209 @@ background-color: #E0C000;
 box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
 }
 
-/* --- Responsive adjustments --- */
+/* Attacker and Defender button colors */
+.model-controls .set-attacker-btn {
+background-color: #DC3545;
+color: #FDFCEE;
+box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
+}
+
+.model-controls .set-attacker-btn:hover {
+background-color: #C82333;
+box-shadow: 0 0 8px rgba(220, 53, 69, 0.8);
+}
+
+.model-controls .set-target-btn { /* Using .set-target-btn to match your HTML */
+background-color: #007BFF;
+color: #FDFCEE;
+box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.model-controls .set-target-btn:hover { /* Using .set-target-btn to match your HTML */
+background-color: #0056B3;
+box-shadow: 0 0 8px rgba(0, 123, 255, 0.8);
+}
+
+/* NEW: Combat Target Buttons Group Styling */
+.combat-target-buttons {
+display: flex;
+flex-direction: column; /* Stack buttons vertically */
+gap: 5px;
+margin-left: auto; /* Push this group to the far right */
+align-items: flex-end; /* Align buttons to the right within their column */
+}
+
+/* --- NEW: Combat Resolution Modal Styles --- */
+.modal {
+display: none; /* Hidden by default */
+position: fixed; /* Stay in place */
+z-index: 100; /* Sit on top */
+left: 0;
+top: 0;
+width: 100%; /* Full width */
+height: 100%; /* Full height */
+overflow: auto; /* Enable scroll if needed */
+background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+justify-content: center; /* Keep these for when JS sets display to flex */
+align-items: center;    /* Keep these for when JS sets display to flex */
+}
+
+/* Add a class that JavaScript will toggle to show the modal */
+.modal.show {
+display: flex; /* Only show when this class is present */
+}
+
+.modal-content {
+background-color: #FDFCEE; /* Receipt paper color */
+margin: auto; /* Centered */
+padding: 25px;
+border: 1px solid #888;
+width: 80%; /* Could be responsive */
+max-width: 500px; /* Max width for readability */
+box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+border-radius: 5px;
+position: relative;
+font-family: 'Roboto Mono', monospace;
+color: #1A1A1A;
+text-align: center;
+}
+
+.modal-content h2 {
+font-family: 'Bangers', cursive;
+color: #1A1A1A;
+margin-top: 0;
+margin-bottom: 15px;
+font-size: 1.8em;
+border-bottom: 1px dashed #606060;
+padding-bottom: 10px;
+}
+
+.combat-log {
+white-space: pre-wrap; /* Preserves line breaks from JS string */
+text-align: left;
+margin-bottom: 15px;
+padding: 10px;
+background-color: #E8E8E8; /* Light background for log */
+border-radius: 3px;
+font-size: 0.9em;
+line-height: 1.4;
+}
+
+.combat-outcome {
+font-weight: bold;
+font-size: 1.1em;
+margin-bottom: 20px;
+text-align: center;
+}
+
+/* Specific colors for names within the modal log/outcome */
+.combat-log .attacker-name, .combat-outcome .attacker-name {
+color: #DC3545; /* Red */
+}
+
+.combat-log .defender-name, .combat-outcome .defender-name {
+color: #007BFF; /* Blue */
+}
+
+.modal-content button#modalOkBtn {
+background-color: #007bff;
+color: white;
+border: none;
+padding: 10px 20px;
+border-radius: 4px;
+cursor: pointer;
+font-size: 1em;
+transition: background-color 0.2s ease;
+}
+
+.modal-content button#modalOkBtn:hover {
+background-color: #0056b3;
+}
+
+.close-button {
+color: #aaa;
+position: absolute;
+top: 10px;
+right: 15px;
+font-size: 28px;
+font-weight: bold;
+cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+color: #1A1A1A;
+text-decoration: none;
+cursor: pointer;
+}
+
+/* Responsive adjustments for modal */
+@media (max-width: 600px) {
+.modal-content {
+    width: 95%;
+    padding: 15px;
+}
+.modal-content h2 {
+    font-size: 1.5em;
+}
+.combat-log {
+    font-size: 0.85em;
+}
+}
+
+/* Responsive adjustments for overall layout */
 @media (max-width: 768px) {
 .game-controls {
-flex-direction: column;
-gap: 10px;
+    flex-direction: column;
+    gap: 10px;
 }
 .dice-buttons .roll-dice-btn, button {
-padding: 6px 10px;
-font-size: 0.8em;
+    padding: 6px 10px;
+    font-size: 0.8em;
 }
 }
 
 /* Even smaller screens (e.g., iPhone SE) */
 @media (max-width: 400px) {
 .container {
-padding: 10px;
+    padding: 10px;
 }
 h1 {
-font-size: 1.6em;
+    font-size: 1.6em;
 }
-.dice-roller-section, .game-controls, .player-panel { /* Changed to .player-panel for both */
-padding: 8px;
-margin-bottom: 10px;
+.dice-roller-section, .game-controls, .player-panel {
+    padding: 8px;
+    margin-bottom: 10px;
 }
 .dice-buttons .roll-dice-btn, button {
-padding: 5px 8px;
-font-size: 0.7em;
+    padding: 5px 8px;
+    font-size: 0.7em;
 }
 .player-name-input input {
-width: 90px;
+    width: 90px;
 }
 .player-orders {
-font-size: 1.1em;
+    font-size: 1.1em;
 }
 .order-token {
-width: 30px;
-height: 30px;
-font-size: 1em;
+    width: 30px;
+    height: 30px;
+    font-size: 1em;
 }
 .order-token.used::before {
-font-size: 1.3em;
+    font-size: 1.3em;
 }
 .squad-controls button {
-padding: 6px 10px;
-font-size: 0.8em;
+    padding: 6px 10px;
+    font-size: 0.8em;
 }
 .model-card {
-padding: 6px;
+    padding: 6px;
 }
-.model-info {
-min-width: 90px;
-font-size: 0.8em;
-}
-.model-controls button, .model-controls input[type="number"], .roll-rank-btn {
-padding: 3px 5px;
-font-size: 0.65em;
-width: 35px;
+.model-info .mugshot-img {
+    width: 40px; /* Reverted to original size for small screens */
+    height: 40px; /* Reverted to original size for small screens */
 }
 }
+
+

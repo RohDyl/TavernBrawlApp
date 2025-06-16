@@ -12,57 +12,62 @@
 <div class="container">
 <h1>TAVERN BRAWL</h1>
 
-<!-- Universal Dice Roller Section -->
-<div class="dice-roller-section">
-    <div class="dice-buttons">
-        <button class="roll-dice-btn" data-num-dice="1">Roll 1d20</button>
-        <button class="roll-dice-btn" data-num-dice="2">Roll 2d20</button>
-        <button class="roll-dice-btn" data-num-dice="3">Roll 3d20</button>
-    </div>
-    <div class="dice-results">
-        Results: <span id="diceResultsDisplay"></span>
-    </div>
-</div>
-<!-- End Universal Dice Roller Section -->
+<!-- NEW: Top Control Panel Container -->
+<div class="top-control-panel">
 
-<div class="game-controls">
-    <div class="turn-tracker">
-        Turn: <span id="currentTurn">1</span> / <span id="maxTurnsDisplay">3</span>
-        <button id="nextTurnBtn">Next Turn</button>
+    <!-- Universal Dice Roller Section -->
+    <div class="dice-roller-section">
+        <div class="dice-buttons">
+            <button class="roll-dice-btn dice-1d20" data-num-dice="1">Roll 1d20</button>
+            <button class="roll-dice-btn dice-2d20" data-num-dice="2">Roll 2d20</button>
+            <button class="roll-dice-btn dice-3d20" data-num-dice="3">Roll 3d20</button>
+        </div>
+        <div class="dice-results">
+            Results: <span id="diceResultsDisplay"></span>
+        </div>
     </div>
-    <div class="max-turns-control">
-        Max Turns: <input type="number" id="maxTurnsInput" value="3" min="1" max="10">
-    </div>
-    <div class="point-limit-control">
-        Point Limit: <input type="number" id="pointLimitInput" value="4" min="1" max="10">
-    </div>
-    <button id="resetGameBtn">Reset Game</button>
-</div>
+    <!-- End Universal Dice Roller Section -->
 
-<!-- Combat Control Panel -->
-<div class="combat-control-panel">
-    <h3>Combat Setup</h3>
-    <div class="combat-selection">
-        Attacker: <span id="activeAttackerDisplay">None</span>
-        Defender: <span id="activeTargetDisplay">None</span>
+    <div class="game-controls">
+        <div class="turn-tracker">
+            Turn: <span id="currentTurn">1</span> / <span id="maxTurnsDisplay">3</span>
+            <button id="nextTurnBtn">Next Turn</button>
+        </div>
+        <div class="max-turns-control">
+            Max Turns: <input type="number" id="maxTurnsInput" value="3" min="1" max="10">
+        </div>
+        <div class="point-limit-control">
+            Point Limit: <input type="number" id="pointLimitInput" value="4" min="1" max="10">
+        </div>
+        <button id="resetGameBtn">Reset Game</button>
     </div>
-    <div class="combat-options">
-        <label>
-            <input type="checkbox" id="targetInCover"> Defender in Cover
-        </label>
-        <label>
-            Attack Type:
-            <select id="attackType">
-                <option value="ranged">Ranged</option>
-                <option value="melee">Melee</option>
-            </select>
-        </label>
-        <label>
-            <input type="checkbox" id="isStationaryAttack"> Stationary Attack
-        </label>
+
+    <!-- Combat Control Panel -->
+    <div class="combat-control-panel">
+        <h3>Combat Setup</h3>
+        <div class="combat-selection">
+            Attacker: <span id="activeAttackerDisplay">None</span>
+            Defender: <span id="activeTargetDisplay">None</span>
+        </div>
+        <div class="combat-options">
+            <label>
+                <input type="checkbox" id="targetInCover"> Defender in Cover
+            </label>
+            <label>
+                Attack Type:
+                <select id="attackType">
+                    <option value="ranged">Ranged</option>
+                    <option value="melee">Melee</option>
+                </select>
+            </label>
+            <label>
+                <input type="checkbox" id="isStationaryAttack"> Stationary Attack
+            </label>
+        </div>
+        <button id="resolveCombatBtn">Resolve Combat</button>
     </div>
-    <button id="resolveCombatBtn">Resolve Combat</button>
 </div>
+<!-- END NEW: Top Control Panel Container -->
 
 <div class="players-container"> <!-- Container for both player panels -->
     <!-- Player 1 Panel -->
@@ -98,6 +103,18 @@
     </div>
 </div>
 </div>
+
+<!-- Combat Resolution Modal Structure -->
+<div id="combatModal" class="modal">
+<div class="modal-content">
+    <span class="close-button">&times;</span>
+    <h2>Combat Resolution</h2>
+    <div id="combatLogDisplay" class="combat-log"></div>
+    <div id="combatOutcomeDisplay" class="combat-outcome"></div>
+    <button id="modalOkBtn">OK</button>
+</div>
+</div>
+<!-- END Combat Resolution Modal Structure -->
 
 <script src="script.js"></script>
 </body>

@@ -36,6 +36,13 @@ const targetInCoverCheckbox = document.getElementById('targetInCover');
 const attackTypeSelect = document.getElementById('attackType');
 const isStationaryAttackCheckbox = document.getElementById('isStationaryAttack');
 
+// Modal elements
+const combatModal = document.getElementById('combatModal');
+const combatLogDisplay = document.getElementById('combatLogDisplay');
+const combatOutcomeDisplay = document.getElementById('combatOutcomeDisplay');
+const modalOkBtn = document.getElementById('modalOkBtn');
+const closeButton = document.querySelector('.close-button');
+
 const MODEL_COSTS = {
     small: 1,
     large: 2
@@ -124,11 +131,12 @@ function updatePlayerSpecificUI(playerId) {
         modelCard.dataset.modelId = model.id;
         modelCard.dataset.playerId = playerId; // Add player ID to model card
 
+        // Reverted HTML structure for model card
         modelCard.innerHTML = `
             <div class="model-info">
                 <img src="${model.mugshot}" alt="${model.name}" class="mugshot-img"> <!-- Mugshot Image -->
                 <div>
-                    ${model.name} <br>
+                    <strong>${model.name}</strong> <br> <!-- MODIFIED: Added <strong> tag here -->
                     Rank: <span class="model-rank-display">${model.rank}</span>
                     <span class="hits-taken-display">(Hits: ${model.hitsTaken})</span>
                     <span class="rank-rolls-display">(Rolls: ${model.rankRollsUsed}/${MAX_RANK_ROLLS})</span>
@@ -189,16 +197,16 @@ function calculatePointsSpent(playerId) {
 }
 
 function updateCombatSetupDisplay() {
-    let attackerName = "None";
-    let targetName = "None";
+    let attackerNameHtml = "None";
+    let targetNameHtml = "None";
 
     if (game.activeAttacker) {
         const attackerPlayer = game.players[game.activeAttacker.playerId];
         const attackerModel = attackerPlayer.squad.find(m => m.id === game.activeAttacker.modelId);
         if (attackerModel) {
-            attackerName = `${attackerPlayer.name}'s ${attackerModel.name}`;
+            attackerNameHtml = `<span class="attacker-name">${attackerPlayer.name}'s ${attackerModel.name}</span>`;
         } else {
-            attackerName = `${attackerPlayer.name}'s [KO'd]`;
+            attackerNameHtml = `<span class="attacker-name">${attackerPlayer.name}'s [KO'd]</span>`;
         }
     }
 
@@ -206,13 +214,25 @@ function updateCombatSetupDisplay() {
         const targetPlayer = game.players[game.activeTarget.playerId];
         const targetModel = targetPlayer.squad.find(m => m.id === game.activeTarget.modelId);
         if (targetModel) {
-            targetName = `${targetPlayer.name}'s ${targetModel.name}`;
+            targetNameHtml = `<span class="defender-name">${targetPlayer.name}'s ${targetModel.name}</span>`;
         } else {
-            targetName = `${targetPlayer.name}'s [KO'd]`;
+            targetNameHtml = `<span class="defender-name">${targetPlayer.name}'s [KO'd]</span>`;
         }
     }
-    activeAttackerDisplay.textContent = attackerName;
-    activeTargetDisplay.textContent = targetName;
+    activeAttackerDisplay.innerHTML = attackerNameHtml;
+    activeTargetDisplay.innerHTML = targetNameHtml;
+}
+
+// Function to show the modal
+function showCombatModal(log, outcome) {
+    combatLogDisplay.innerHTML = log; // Use innerHTML to render spans
+    combatOutcomeDisplay.innerHTML = outcome; // Use innerHTML to render spans
+    combatModal.classList.add('show'); // Add the 'show' class
+}
+
+// Function to hide the modal
+function hideCombatModal() {
+    combatModal.classList.remove('show'); // Remove the 'show' class
 }
 
 function resolveCombat() {
@@ -240,7 +260,8 @@ function resolveCombat() {
     const attackType = attackTypeSelect.value;
     const isStationaryAttack = isStationaryAttackCheckbox.checked;
 
-    let combatLog = `Combat between ${attackerModel.name} (Rank ${attackerModel.rank}) and ${targetModel.name} (Rank ${targetModel.rank}):\n`;
+    // Use spans for coloring in the log and outcome
+    let combatLog = `Combat between <span class="attacker-name">${attackerModel.name}</span> (Rank ${attackerModel.rank}) and <span class="defender-name">${targetModel.name}</span> (Rank ${targetModel.rank}):\n`;
     combatLog += `Attack Type: ${attackType.toUpperCase()}, Stationary: ${isStationaryAttack ? 'Yes' : 'No'}, Target in Cover: ${isTargetInCover ? 'Yes' : 'No'}\n`;
 
     // Determine dice to roll based on rules
@@ -284,8 +305,8 @@ function resolveCombat() {
     const attackerRolls = Array.from({ length: attackerDiceCount }, () => rollD20());
     const targetRolls = Array.from({ length: targetDiceCount }, () => rollD20());
 
-    combatLog += `${attackerModel.name} (Eff. Rank ${effectiveAttackerRank}) rolls: ${attackerRolls.join(', ')}\n`;
-    combatLog += `${targetModel.name} (Eff. Rank ${effectiveTargetRank}) rolls: ${targetRolls.join(', ')}\n`;
+    combatLog += `<span class="attacker-name">${attackerModel.name}</span> (Eff. Rank ${effectiveAttackerRank}) rolls: ${attackerRolls.join(', ')}\n`;
+    combatLog += `<span class="defender-name">${targetModel.name}</span> (Eff. Rank ${effectiveTargetRank}) rolls: ${targetRolls.join(', ')}\n`;
 
     // Process rolls for successes and crits
     const processRollsResults = (rolls, rank) => {
@@ -315,30 +336,30 @@ function resolveCombat() {
     if (attackerResults.crits.length > 0 && targetResults.crits.length === 0) {
         // Attacker Crit (and Defender is NOT Crit)
         damageToTarget = attackerResults.crits.length * 6;
-        outcomeMessage = `${attackerModel.name} scores a CRITICAL HIT! ${targetModel.name} takes ${damageToTarget} damage.`;
+        outcomeMessage = `<span class="attacker-name">${attackerModel.name}</span> scores a CRITICAL HIT! <span class="defender-name">${targetModel.name}</span> takes ${damageToTarget} damage.`;
     } else if (targetResults.crits.length > 0 && attackerResults.crits.length === 0) {
         // Defender Crit (and Attacker is NOT Crit)
-        outcomeMessage = `${targetModel.name} scores a CRITICAL DEFENSE! Attack is completely negated.`;
+        outcomeMessage = `<span class="defender-name">${targetModel.name}</span> scores a CRITICAL DEFENSE! Attack is completely negated.`;
     } else if (attackerResults.crits.length > 0 && targetResults.crits.length > 0) {
         // Both Critical Hit: Defender's Crit wins
-        outcomeMessage = `Both critical! ${targetModel.name}'s critical defense wins. Attack is negated.`;
+        outcomeMessage = `Both critical! <span class="defender-name">${targetModel.name}</span>'s critical defense wins. Attack is negated.`;
     } else {
         // 2. If NO Critical Hits from either side, compare Non-Crit Successes
         if (attackerResults.successes.length > 0 && targetResults.successes.length === 0) {
             // Attacker Success, Defender Failure
             damageToTarget = attackerResults.successes.length * 3;
-            outcomeMessage = `${attackerModel.name} hits ${targetModel.name} for ${damageToTarget} damage.`;
+            outcomeMessage = `<span class="attacker-name">${attackerModel.name}</span> hits <span class="defender-name">${targetModel.name}</span> for ${damageToTarget} damage.`;
         } else if (attackerResults.successes.length === 0 && targetResults.successes.length > 0) {
             // Attacker Failure, Defender Success -> Attacker takes 3 damage
             damageToAttacker = 3;
-            outcomeMessage = `${attackerModel.name} misses, but ${targetModel.name} successfully defends and counters! ${targetModel.name} takes 3 damage.`;
+            outcomeMessage = `<span class="attacker-name">${attackerModel.name}</span> misses, but <span class="defender-name">${targetModel.name}</span> successfully defends and counters! <span class="attacker-name">${attackerModel.name}</span> takes 3 damage.`;
         } else if (attackerResults.successes.length > 0 && targetResults.successes.length > 0) {
             // Both Success (Non-Critical) - Higher roll wins
             if (attackerResults.highestSuccess > targetResults.highestSuccess) {
                 damageToTarget = attackerResults.successes.length * 3;
-                outcomeMessage = `${attackerModel.name}'s higher roll hits ${targetModel.name} for ${damageToTarget} damage.`;
+                outcomeMessage = `<span class="attacker-name">${attackerModel.name}</span>'s higher roll hits <span class="defender-name">${targetModel.name}</span> for ${damageToTarget} damage.`;
             } else { // Defender's roll is higher or tied
-                outcomeMessage = `${targetModel.name}'s defense holds. Attack is negated.`;
+                outcomeMessage = `<span class="defender-name">${targetModel.name}</span>'s defense holds. Attack is negated.`;
             }
         } else {
             // Both Failure
@@ -352,7 +373,7 @@ function resolveCombat() {
         targetModel.hitsTaken++;
         if (targetModel.rank <= 0) {
             targetModel.isKO = true;
-            outcomeMessage += ` ${targetModel.name} is KO'd!`;
+            outcomeMessage += ` <span class="defender-name">${targetModel.name}</span> is KO'd!`;
         }
     }
     if (damageToAttacker > 0) {
@@ -360,11 +381,12 @@ function resolveCombat() {
         attackerModel.hitsTaken++;
         if (attackerModel.rank <= 0) {
             attackerModel.isKO = true;
-            outcomeMessage += ` ${attackerModel.name} is KO'd!`;
+            outcomeMessage += ` <span class="attacker-name">${attackerModel.name}</span> is KO'd!`;
         }
     }
 
-    alert(combatLog + "\n" + outcomeMessage);
+    // Show the custom modal instead of alert
+    showCombatModal(combatLog, outcomeMessage);
 
     // Clear active attacker/target after combat
     game.activeAttacker = null;
@@ -625,7 +647,8 @@ document.querySelectorAll('.player-panel').forEach(panel => {
                 if (newRank > 20) newRank = 20;
 
                 model.rank = newRank;
-                target.closest('.model-card').querySelector('.model-rank-display').textContent = newRank;
+                // Reverted selector to original structure
+                modelCard.querySelector('.model-rank-display').textContent = newRank;
                 calculateTotalRank(playerId);
 
                 const totalRankSpan = playerId === 1 ? player1TotalRankSpan : player2TotalRankSpan;
@@ -633,6 +656,17 @@ document.querySelectorAll('.player-panel').forEach(panel => {
             }
         }
     });
+});
+
+// Event listeners for the modal
+modalOkBtn.addEventListener('click', hideCombatModal);
+closeButton.addEventListener('click', hideCombatModal);
+
+// Close modal if user clicks outside of it
+window.addEventListener('click', (event) => {
+    if (event.target == combatModal) {
+        hideCombatModal();
+    }
 });
 
 // Resolve Combat Button Listener
@@ -686,7 +720,7 @@ function getMugshotPath(characterName) {
 // Convert "Fat Freddy" to "fat_freddy.png"
 const filename = characterName.toLowerCase().replace(/\s/g, '_') + '.png';
 // Assuming your folder structure is:
-// YourAppFolder/
+// YourAppApp/
 // ├── index.html
 // └── images/
 //     └── mugshots/
