@@ -136,8 +136,8 @@ function updatePlayerSpecificUI(playerId) {
                     <button class="apply-damage-btn" data-damage="-6" data-model-id="${model.id}" data-player-id="${playerId}">-6</button>
                 </div>
                 <div class="combat-target-buttons">
-                    <button class="set-attacker-btn" data-model-id="${model.id}" data-player-id="${playerId}">Set Attacker</button>
-                    <button class="set-target-btn" data-model-id="${model.id}" data-player-id="${playerId}">Set Target</button>
+                    <button class="set-attacker-btn" data-model-id="${model.id}" data-player-id="${playerId}">Attacker</button>
+                    <button class="set-target-btn" data-model-id="${model.id}" data-player-id="${playerId}">Defender</button>
                 </div>
             </div>
         `;
@@ -674,5 +674,13 @@ return selectedName;
 function getMugshotPath(characterName) {
 // Convert "Fat Freddy" to "fat_freddy.png"
 const filename = characterName.toLowerCase().replace(/\s/g, '_') + '.png';
-return `./Users/dylan.rohleder/Library/CloudStorage/OneDrive-Ogilvy/Desktop/TavernBrawlApp/images/mugshots${filename}`;
+// Assuming your folder structure is:
+// YourAppFolder/
+// ├── index.html
+// └── images/
+//     └── mugshots/
+//         └── your_image.png
+return `./images/mugshots/${filename}`; // Changed to lowercase 'images' and 'mugshots'
 }
+
+
