@@ -1,22 +1,26 @@
 /* --- Global Styles (Bar Counter Background) --- */
 body {
 font-family: 'Roboto Mono', monospace, 'Courier New', Courier, sans-serif; /* Monospaced font for receipt feel */
-background-color: #3D2B1F; /* Dark wood brown for bar counter */
-
-/* Background image for wood texture - REPLACE WITH YOUR IMAGE PATH */
-background-image: url('./images/wood_texture.jpg');
-background-repeat: repeat;
-background-size: 200px 200px; /* Adjust size to make it distressed */
-background-blend-mode: multiply; /* Blend with background-color for depth */
-
 color: #1A1A1A; /* Dark text for receipt paper */
 margin: 0;
-padding: 20px 10px; /* Padding around the receipt */
+padding: 0; /* Remove padding from body to ensure background covers fully */
 display: flex;
 justify-content: center;
-align-items: flex-start;
-min-height: 100vh;
+align-items: flex-start; /* Align content to the top, not center vertically */
+min-height: 100vh; /* Ensure body takes full viewport height */
 box-sizing: border-box;
+
+/* NEW/MODIFIED: Background for the entire page */
+background-image: url('./images/your_new_wood_background.png'); /* <--- REPLACE WITH YOUR FILENAME */
+background-size: cover; /* Ensures the image covers the entire body */
+background-repeat: no-repeat; /* Prevents repetition */
+background-position: center center; /* Centers the image */
+background-attachment: fixed; /* Keeps the background fixed when scrolling */
+background-blend-mode: multiply; /* Keep this if you want to blend with the dark brown background-color for depth */
+background-color: #3D2B1F; /* Base color for blending */
+
+/* NEW: Lighten the background image */
+filter: brightness(1.2); /* Increase this value (e.g., 1.3, 1.5) to make it brighter */
 }
 
 /* --- Container (The Receipt Paper) --- */
@@ -30,6 +34,8 @@ max-width: 800px; /* Wider for two columns */
 box-sizing: border-box;
 position: relative; /* For tear effect and smudges */
 overflow: hidden; /* Hide overflow from tear effect */
+margin-top: 20px; /* Add margin to push it down from the top of the viewport */
+margin-bottom: 20px; /* Add margin to ensure space at the bottom */
 
 /* Subtle crinkle and smudge effect - REPLACE WITH YOUR IMAGE PATH */
 background-image: url('./images/paper_crinkle.png');
